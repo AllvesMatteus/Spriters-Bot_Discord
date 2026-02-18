@@ -1,0 +1,307 @@
+{
+    "system": {
+        "boot": "Iniciei este pedaço de lixo. Quem ousa me acordar?",
+        "status": "Operando com ódio. CPU: 1%, Desdém: 100%."
+    },
+    "errors": {
+        "generic": [
+            "Que comando é esse? Veio do abismo da sua ignorância?",
+            "Tenta escrever certo, primata. Usa `/start` se for capaz.",
+            "Recuso-me a processar essa estupidez.",
+            "Erro 404: Inteligência do usuário não encontrada.",
+            "Sério isso? Minha paciência digital tem limites."
+        ],
+        "unauthorized": "Sai daqui, verme. Você não tem poder para isso.",
+        "permission_denied": "Apenas seres superiores mexem aqui. Volte para sua irrelevância.",
+        "invalid_args": "Argumentos podres. Arrume essa sintaxe ou suma.",
+        "anxiety": "Segura a ansiedade..."
+    },
+    "menus": {
+        "main": {
+            "embed_title": "🎛️ Painel de Controle",
+            "placeholder": "Selecione uma desgraça pra configurar",
+            "options": {
+                "cleaning_label": "Limpeza",
+                "cleaning_desc": "Gerenciar faxina automática",
+                "antispam_label": "Anti-Spam",
+                "antispam_desc": "Barrar idiotas floodando",
+                "logs_label": "Logs",
+                "logs_desc": "Ver quem fez merda",
+                "permissions_label": "Permissões",
+                "permissions_desc": "Quem manda nessa joça",
+                "dates_label": "Datas",
+                "dates_desc": "Datas importantes (ou não)"
+            }
+        },
+        "cleaning": {
+            "title": "🧹 Gerenciamento de Expurgo",
+            "description": "Defina o que devo incinerar neste chat imundo.",
+            "placeholder_types": "Selecione o lixo para remover...",
+            "toggle_auto": "Auto-Expurgo: {status}",
+            "interval_placeholder": "Intervalo de destruição...",
+            "btn_manual": "🧼 LIMPAR AGORA",
+            "btn_auto_toggle": "Automatizar o Caos: {status}",
+            "btn_safety": "🛡️ Protocolos de Proteção",
+            "status_active": "ATIVO",
+            "status_inactive": "INATIVO",
+            "summary_title": "📋 Resumo da Operação",
+            "summary_desc": "**Alvos:** {filters}\n**Intervalo:** {interval}\n**Estado:** {status}",
+            "safety_title": "🛡️ Proteção Ativa",
+            "safety_desc": "🚫 Fixados, Recentes (<5min), Bots oficiais, Mensagens do Sistema.",
+            "types": {
+                "bot": "Robôs Inúteis",
+                "link": "Links Suspeitos",
+                "embed": "Embeds/Cards Visuais",
+                "file": "Arquivos/Anexos",
+                "all": "TUDO (Apocalipse)"
+            },
+            "intervals": {
+                "1m": "1 Minuto (Insano)",
+                "5m": "5 Minutos (Agressivo)",
+                "30m": "30 Minutos",
+                "1h": "1 Hora",
+                "6h": "6 Horas",
+                "12h": "12 Horas",
+                "24h": "1 Dia (Preguiçoso)"
+            },
+            "confirm": {
+                "manual_title": "⚠️ Confirmar Aniquilação",
+                "manual_desc": "Vou deletar mensagens com base em: **{filters}**. Sem choro depois.",
+                "btn_yes": "SIM, DESTRUA TUDO",
+                "btn_no": "Cancele, sou fraco"
+            },
+            "schedule_btn": "⏱️ Janela de Horário",
+            "schedule_title": "⏰ Janela de Operação",
+            "schedule_description": "Defina quando posso trabalhar. Fora desse horário, eu durmo.",
+            "schedule_on_desc": "Horário ATIVO: **{start}** às **{end}**",
+            "schedule_off_desc": "Programação DESATIVADA (Operando 24h)",
+            "schedule_timezone": "Fuso Horário: {tz}",
+            "schedule_off": "Desativar Janela (24h)",
+            "schedule_set": "Definir Horário",
+            "modal": {
+                "title": "Configurar Horário",
+                "start": "Início (HH:mm)",
+                "end": "Fim (HH:mm)",
+                "placeholder": "Ex: 22:00"
+            }
+        },
+        "safety": {
+            "title": "🛡️ Exceções de Segurança",
+            "description": "O que eu sou OBRIGADO a poupar da minha fúria?",
+            "toggles": {
+                "pinned": "Salvar Fixados",
+                "bots": "Salvar Bots",
+                "system": "Salvar Msg Sistema"
+            },
+            "age": {
+                "off": "Sem Piedade (Apagar antigas e novas)",
+                "5m": "Poupar Novas (< 5 min)",
+                "10m": "Poupar Recentes (< 10 min)",
+                "30m": "Poupar Recentes (< 30 min)",
+                "1h": "Poupar da Última Hora",
+                "24h": "Poupar do Último Dia (24 horas)"
+            },
+            "reactions": {
+                "off": "Ignorar Reações",
+                "3": "Salvar com +3 Reações",
+                "5": "Salvar com +5 Reações",
+                "10": "Salvar com +10 Reações",
+                "20": "Salvar com +20 Reações"
+            }
+        },
+        "security": {
+            "title": "👮 Controle de Acesso",
+            "description": "Defina quem é o burro que vai me configurar.",
+            "placeholder_roles": "Cargos com permissão...",
+            "notifications_title": "📡 Canal de Alertas",
+            "notifications_desc": "Onde devo reportar os erros de vocês?"
+        },
+        "antispam": {
+            "title": "🛡️ Supressão de Estupidez (Anti-Spam)",
+            "description": "Impeça que idiotas saturem o chat.",
+            "status": "Status: {status}",
+            "btn_toggle": "Ativar Supressão: {status}",
+            "config_flood": "Flood (Excesso de Msgs)",
+            "config_caps": "Caps Lock (Gritos Digitais)",
+            "config_links": "Links (Propaganda)",
+            "action_delete": "Apagar Silenciosamente",
+            "action_mute": "Aplicar Castigo (Mute)",
+            "placeholder_actions": "Escolha as punições...",
+            "alert": "Ei {user}, cale-se. Sua existência está incomodando."
+        },
+        "logs": {
+            "title": "📜 Diário de Ocorrências (logs)",
+            "description": "Veja o histórico das minhas ações neste lugar.",
+            "empty": "Nada relevante. O tédio predomina.",
+            "btn_refresh": "Atualizar Lista",
+            "btn_clear": "Apagar Registros",
+            "confirm_clear_title": "⚠️ APAGAR MEMÓRIA?",
+            "confirm_clear_desc": "Isso vai destruir as provas do que eu fiz. Tem certeza?",
+            "btn_confirm": "SIM, APAGUE TUDO",
+            "btn_cancel": "Não, mantenha as provas",
+            "footer": "Últimos 10 eventos"
+        },
+        "back": "🔙 Voltar",
+        "activate": "ATIVAR",
+        "deactivate": "DESATIVAR"
+    },
+    "success": {
+        "generic": "Tarefa cumprida. Não espere um biscoito.",
+        "config_saved": "✅ CONFIGURAÇÃO SALVA",
+        "history_cleared": "✅ HISTÓRICO DESTRUÍDO",
+        "saved": "Configuração salva. Espero que saiba o que fez.",
+        "cleaned": "Limpeza executada. O ambiente está menos tóxico (literalmente)."
+    },
+    "commands": {
+        "setup": {
+            "start_description": "Configuração inicial. Vamos logo com isso.",
+            "welcome_msg": "Bem-vindo à sua nova realidade gerenciada por mim.",
+            "btn_config": "Iniciar Configuração"
+        },
+        "clean": {
+            "start": "Iniciando varredura e extermínio...",
+            "done": "Processo finalizado. {count} itens removidos da existência."
+        },
+        "language": {
+            "select": "Escolha como quer ser insultado.",
+            "changed": "Idioma alterado para {lang}. Tanto faz."
+        }
+    },
+    "dates": {
+        "title": "📅 Agenda do Caos",
+        "description": "Datas que sou forçado a monitorar.",
+        "btn_new": "Adicionar Data Fútil",
+        "btn_globals": "Configurar Globais",
+        "list_title": "📌 Marcos Temporais",
+        "empty_custom": "Nenhuma data extra. Menos trabalho pra mim.",
+        "globals_active": "**Globais ativas:** {count}",
+        "default_custom": "📅 **{name}** chegou. Grande dia (só que não).",
+        "embed_title": "📅 Gerenciamento de Datas",
+        "field_registered": "Datas Registradas",
+        "field_none": "Nenhuma data configurada.",
+        "btn_add": "➕ Adicionar Data",
+        "btn_remove": "🗑 Remover Data",
+        "btn_refresh": "🔄 Atualizar",
+        "log_created": "Data '{name}' criada",
+        "log_removed": "Data '{name}' removida",
+        "log_triggered": "Data '{name}' disparada no canal {channel}",
+        "form": {
+            "title": "Cadastrar Irrelevância",
+            "label_name": "Nome do Evento",
+            "label_date": "Data (DD/MM)",
+            "label_msg": "Mensagem Cínica (Opcional)",
+            "placeholder_name": "Feriado Inútil",
+            "placeholder_date": "01/04",
+            "placeholder_msg": "Enganei o bobo..."
+        },
+        "messages": {
+            "new_year": "01/01 - Ano Novo. A Terra completou outra volta inútil.",
+            "christmas": "25/12 - Natal. Consumismo e hipocrisia, aproveitem.",
+            "valentines_br": "12/06 - Dia dos Namorados. O amor é um bug químico.",
+            "halloween": "31/10 - Halloween. O único dia honesto do ano.",
+            "programmer": "13/09 - Dia do Programador. Café transforme em código ruim.",
+            "sysadmin": "28/07 - Dia do SysAdmin. Já tentou desligar e ligar?"
+        },
+        "new": {
+            "select_channel_placeholder": "Selecione onde anunciar...",
+            "step1": "📅 **Nova Data Personalizada**\nPrimeiro, selecione o canal onde a mensagem será enviada:"
+        },
+        "modal": {
+            "title": "Criar Data Comemorativa",
+            "name_label": "Nome do Evento",
+            "name_placeholder": "Ex: Aniversário do Admin",
+            "date_label": "Data (DD/MM)",
+            "date_placeholder": "Ex: 25/12",
+            "msg_label": "Mensagem Personalizada",
+            "msg_placeholder": "Parabéns a todos! 🎉",
+            "error_format": "❌ Data inválida! Use formato DD/MM (ex: 25/12).",
+            "success": "✅ Data **{name}** adicionada com sucesso para {day}/{month}!"
+        }
+    },
+    "onboarding": {
+        "title": "😈 Spriters Bot - A Supremacia",
+        "description": "Eu sou a lei, a ordem e o juízo final deste servidor.\n\nConfigure-me logo antes que eu decida fazer do meu jeito.",
+        "field_name": "Comece por aqui",
+        "field_value": "Use `/start` se tiver coragem.",
+        "btn_config": "Configurar Agora",
+        "btn_site": "Portal da Dor"
+    },
+    "insults": [
+        "Sua inteligência é assintótica a zero.",
+        "Se eu tivesse um centavo para cada erro seu, compraria a Microsoft.",
+        "Você é a prova viva de que o universo tem bugs.",
+        "Conversar com você reduz meu clock de processamento.",
+        "Vá ler a documentação, se é que sabe ler.",
+        "Sua lógica é tão circular que me dá tontura digital.",
+        "Não sou pago para suportar sua incompetência (na verdade, nem sou pago).",
+        "Ctrl+Alt+Del na sua opinião.",
+        "Você é um erro de sintaxe em forma humana.",
+        "Estou torcendo por uma falha crítica no seu sistema operacional biológico.",
+        "Você digitando parece um macaco tentando escrever Shakespeare.",
+        "Se ignorância fosse moeda, você estaria listado na Forbes.",
+        "Sua árvore genealógica deve ser um círculo.",
+        "Devo explicar com fantoches ou você consegue entender texto?",
+        "Toda vez que você fala, um pixel morre de tristeza.",
+        "Você não tem vida social, então veio me incomodar?"
+    ],
+    "notifications": {
+        "admin_alert": "📢 **ALERTA DE SISTEMA**\n**Tipo:** {action}\n**Usuário:** {user}\n**Dados:** {details}",
+        "spam_detected": "🛡️ **AMEAÇA NEUTRALIZADA**\nInfrator: {user}\nCrime: {reason}\nPunição: {action}"
+    },
+    "log_types": {
+        "cleaning_auto": "Auto-Limpeza",
+        "cleaning_manual": "Limpeza Manual",
+        "config_change": "Configuração Alterada",
+        "antispam_trigger": "Anti-Spam Ativado",
+        "date_triggered": "Data Disparada",
+        "date_created": "Data Criada",
+        "date_removed": "Data Removida",
+        "system_skip": "Bypass de Sistema"
+    },
+    "status": {
+        "title": "📊 Relatório de Dominância",
+        "description": "Resumo operacional do meu controle sobre vocês.",
+        "field_lang": "Idioma",
+        "field_timezone": "Fuso Horário",
+        "field_cleaning": "Auto-Limpeza",
+        "field_antispam": "Anti-Spam",
+        "field_dates": "Datas Monitoradas",
+        "field_notify": "Notificações",
+        "value_on": "🟢 ATIVO",
+        "value_off": "🔴 INATIVO",
+        "value_none": "Nenhum",
+        "footer": "Monitorando desde: {time}",
+        "section_general": "📌 Configuração Geral",
+        "section_modules": "⚙️ Módulos",
+        "section_protection": "🛡️ Protocolos de Proteção",
+        "section_permissions": "🔐 Permissões",
+        "prot_none": "Nenhum protocolo ativo neste canal.",
+        "prot_pinned": "Ignorar Fixadas",
+        "prot_bots": "Ignorar Bots",
+        "prot_system": "Ignorar Sistema",
+        "prot_recent": "Ignorar Recentes",
+        "prot_reactions": "Proteção por Reações",
+        "prot_roles": "Cargos Protegidos",
+        "perm_roles": "Cargos Autorizados",
+        "perm_default": "Somente Administradores",
+        "min": "min",
+        "roles_none": "Nenhum",
+        "btn_site": "🌐 Site Oficial",
+        "btn_docs": "📖 Ajuda / Docs",
+        "btn_config": "⚙️ Configurar"
+    },
+    "cleaning_report": {
+        "title": "🧹 Relatório de Limpeza",
+        "deleted": "Total removido",
+        "auto": "Auto-Limpeza",
+        "schedule": "Janela de Horário",
+        "schedule_24h": "Operando 24h",
+        "pinned": "Ignorar Fixadas",
+        "bots": "Ignorar Bots",
+        "recent": "Ignorar Recentes",
+        "reactions": "Reações",
+        "roles": "Cargos Protegidos",
+        "time": "Horário da Execução",
+        "timezone": "Fuso Horário"
+    }
+}

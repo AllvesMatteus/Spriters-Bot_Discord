@@ -1,0 +1,26 @@
+{
+  "435962611356663819": {
+    "language": "pt-BR",
+    "toxicityLevel": "HIGH",
+    "cleaning": {},
+    "dates": {
+      "lastRun": "2026-2-18"
+    }
+  },
+  "857479226524565545": {
+    "language": "pt-BR",
+    "toxicityLevel": "HIGH",
+    "cleaning": {},
+    "dates": {
+      "lastRun": "2026-2-18"
+    }
+  },
+  "1248429171206787072": {
+    "language": "pt-BR",
+    "toxicityLevel": "HIGH",
+    "cleaning": {},
+    "dates": {
+      "lastRun": "2026-2-18"
+    }
+  }
+}

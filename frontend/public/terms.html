@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Terms of Service - Spriters Bot</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;900&display=swap" rel="stylesheet">
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+
+        .purple-glow {
+            text-shadow: 0 0 20px rgba(168, 85, 247, 0.5);
+        }
+    </style>
+</head>
+
+<body class="bg-black text-gray-300 min-h-screen selection:bg-purple-500/30 selection:text-purple-200">
+
+    <!-- Navigation -->
+    <nav class="fixed top-0 left-0 right-0 z-50 border-b border-white/5 bg-black/50 backdrop-blur-xl">
+        <div class="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
+            <a href="/"
+                class="flex items-center gap-2 group hover:text-purple-400 transition-colors text-sm font-bold uppercase tracking-widest text-gray-400">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M10 19l-7-7m0 0l7-7m-7 7h18"></path>
+                </svg>
+                <span id="nav-back">Back to Site</span>
+            </a>
+
+            <div class="flex items-center gap-4">
+                <button id="btn-lang" onclick="toggleLang()"
+                    class="text-gray-400 hover:text-white transition-colors text-sm font-bold border border-gray-700 rounded px-2 py-1">
+                    🇺🇸 EN
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Header -->
+    <header class="pt-32 pb-12 px-4 text-center">
+        <img src="/sprite_logo_roxo.png" alt="Spriters" class="h-20 w-auto mx-auto mb-6 object-contain">
+        <h1 class="text-4xl md:text-5xl font-black uppercase tracking-tighter text-white mb-4 purple-glow"
+            id="page-title">Terms of Service</h1>
+        <div class="h-1 w-20 bg-purple-600 mx-auto rounded-full"></div>
+    </header>
+
+    <!-- Content -->
+    <main class="max-w-4xl mx-auto px-4 pb-20">
+
+        <!-- WARNING BOX -->
+        <div class="bg-purple-900/10 border border-purple-500/30 rounded-2xl p-6 mb-12 relative overflow-hidden">
+            <div class="absolute top-0 right-0 p-4 opacity-10">
+                <svg class="w-24 h-24 text-purple-500" fill="currentColor" viewBox="0 0 24 24">
+                    <path
+                        d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm1 15h-2v-2h2v2zm0-4h-2V7h2v6z" />
+                </svg>
+            </div>
+            <h3 class="text-purple-400 font-bold uppercase tracking-widest mb-2 flex items-center gap-2">
+                <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+                        d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                </svg>
+                <span id="disclaimer-title">Important Disclaimer: The "Toxic" Persona</span>
+            </h3>
+            <p class="text-gray-300 text-sm leading-relaxed" id="disclaimer-text">
+                Spriters Bot is programmed to roleplay a "superior artificial intelligence" with a sarcastic and mildly
+                hostile personality.
+                <strong>This is purely a fictional character designed for entertainment.</strong>
+                The insulting messages are automated jokes. The developers do not endorse actual harassment or toxicity.
+                Please treat others with respect and do not imitate the bot's behavior in serious contexts.
+            </p>
+        </div>
+
+        <!-- ENGLISH CONTENT -->
+        <div id="content-en" class="space-y-12 text-gray-300 leading-relaxed">
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">1.</span> Acceptance of Terms
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p>By inviting Spriters Bot to your Discord server or using its features, you agree to be bound by
+                        these Terms of Service. If you do not agree, you must remove the bot from your server
+                        immediately. These terms are subject to change, and continued use signifies your acceptance of
+                        any updates.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">2.</span> Usage License & Restrictions
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p class="mb-4">We grant you a limited, non-exclusive, non-transferable license to use Spriters Bot
+                        for server administration and entertainment.</p>
+                    <p class="font-bold text-white mb-2">You agree NOT to:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-400">
+                        <li>Use the bot to violate Discord's <a href="https://discord.com/terms"
+                                class="text-purple-400 hover:underline">Terms of Service</a> or <a
+                                href="https://discord.com/guidelines" class="text-purple-400 hover:underline">Community
+                                Guidelines</a>.</li>
+                        <li>Exploit bugs, spam commands, or attempt to crash the service.</li>
+                        <li>Reverse engineer the bot's code or copy its unique personality assets for malicious
+                            purposes.</li>
+                        <li>Use the bot to facilitate harassment, hate speech, or illegal activities.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">3.</span> Limitation of Liability
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p class="mb-4">Spriters Bot is provided "AS IS" without any warranties. The developers are not
+                        responsible for:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-400">
+                        <li><strong>Messages deleted</strong> by the "Auto-Cleaning" or "Anti-Spam" features.
+                            Configuration of these tools is the server owner's responsibility.</li>
+                        <li><strong>Service interruptions</strong> or downtime.</li>
+                        <li><strong>Data loss</strong> resulting from system errors or Discord API issues.</li>
+                        <li>Any offense taken from the bot's automated "toxic" responses (see Disclaimer).</li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <!-- PORTUGUESE CONTENT -->
+        <div id="content-pt" class="hidden space-y-12 text-gray-300 leading-relaxed">
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">1.</span> Aceitação dos Termos
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p>Ao convidar o Spriters Bot para seu servidor Discord ou usar seus recursos, você concorda em
+                        ficar vinculado a estes Termos de Serviço. Se não concordar, remova o bot imediatamente. Estes
+                        termos estão sujeitos a alterações, e o uso contínuo significa sua aceitação.</p>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">2.</span> Licença de Uso e Restrições
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p class="mb-4">Concedemos a você uma licença limitada, não exclusiva e intransferível para usar o
+                        Spriters Bot para administração e entretenimento do servidor.</p>
+                    <p class="font-bold text-white mb-2">Você concorda em NÃO:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-400">
+                        <li>Usar o bot para violar os <a href="https://discord.com/terms"
+                                class="text-purple-400 hover:underline">Termos de Serviço</a> ou <a
+                                href="https://discord.com/guidelines" class="text-purple-400 hover:underline">Diretrizes
+                                da Comunidade</a> do Discord.</li>
+                        <li>Explorar bugs, spammar comandos ou tentar derrubar o serviço.</li>
+                        <li>Fazer engenharia reversa do código ou copiar seus assets de personalidade para fins
+                            maliciosos.</li>
+                        <li>Usar o bot para facilitar assédio, discurso de ódio ou atividades ilegais.</li>
+                    </ul>
+                </div>
+            </section>
+
+            <section>
+                <h2 class="text-2xl font-bold text-white mb-4 flex items-center gap-2">
+                    <span class="text-purple-500">3.</span> Limitação de Responsabilidade
+                </h2>
+                <div class="bg-zinc-900/50 p-6 rounded-xl border border-white/5">
+                    <p class="mb-4">O Spriters Bot é fornecido "COMO ESTÁ" (AS IS), sem garantias. Os desenvolvedores
+                        não são responsáveis por:</p>
+                    <ul class="list-disc pl-5 space-y-2 text-gray-400">
+                        <li><strong>Mensagens excluídas</strong> pelos recursos "Limpeza Automática" ou "Anti-Spam". A
+                            configuração dessas ferramentas é responsabilidade do dono do servidor.</li>
+                        <li><strong>Interrupções de serviço</strong> ou tempo de inatividade.</li>
+                        <li><strong>Perda de dados</strong> resultante de erros do sistema ou problemas na API do
+                            Discord.</li>
+                        <li>Qualquer ofensa tomada das respostas automatizadas "tóxicas" do bot (veja o Aviso Legal).
+                        </li>
+                    </ul>
+                </div>
+            </section>
+        </div>
+
+        <footer class="mt-20 pt-8 border-t border-white/5 text-center text-sm text-gray-600">
+            <p>© 2026 Spriters Bot. All rights reserved.</p>
+        </footer>
+    </main>
+
+    <script>
+        let currentLang = 'en';
+
+        // Translation Data for dynamic elements
+        const uiText = {
+            en: {
+                title: 'Terms of Service',
+                back: 'Back to Site',
+                disclaimerTitle: 'Important Disclaimer: The "Toxic" Persona',
+                disclaimerText: 'Spriters Bot is programmed to roleplay a "superior artificial intelligence" with a sarcastic and mildly hostile personality. <strong>This is purely a fictional character designed for entertainment.</strong> The insulting messages are automated jokes. The developers do not endorse actual harassment or toxicity. Please treat others with respect and do not imitate the bot behavior in serious contexts.'
+            },
+            pt: {
+                title: 'Termos de Serviço',
+                back: 'Voltar ao Site',
+                disclaimerTitle: 'Aviso Importante: A Persona "Tóxica"',
+                disclaimerText: 'O Spriters Bot foi programado para atuar como uma "inteligência artificial superior" com uma personalidade sarcástica e levemente hostil. <strong>Este é um personagem puramente fictício criado para entretenimento.</strong> As mensagens insultuosas são piadas automatizadas. Os desenvolvedores não apoiam assédio real ou toxicidade. Por favor, respeitem uns aos outros e não imitem o comportamento do bot em contextos sérios.'
+            }
+        };
+
+        function toggleLang() {
+            currentLang = currentLang === 'en' ? 'pt' : 'en';
+
+            // Switch Flag
+            document.getElementById('btn-lang').textContent = currentLang === 'en' ? '🇺🇸 EN' : '🇧🇷 PT';
+
+            // Switch Content Divs
+            if (currentLang === 'en') {
+                document.getElementById('content-en').classList.remove('hidden');
+                document.getElementById('content-pt').classList.add('hidden');
+            } else {
+                document.getElementById('content-en').classList.add('hidden');
+                document.getElementById('content-pt').classList.remove('hidden');
+            }
+
+            // Update Dynamic UI
+            document.getElementById('page-title').textContent = uiText[currentLang].title;
+            document.getElementById('nav-back').textContent = uiText[currentLang].back;
+            document.getElementById('disclaimer-title').textContent = uiText[currentLang].disclaimerTitle;
+            document.getElementById('disclaimer-text').innerHTML = uiText[currentLang].disclaimerText;
+        }
+    </script>
+</body>
+
+</html>
