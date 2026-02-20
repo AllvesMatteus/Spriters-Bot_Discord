@@ -122,7 +122,12 @@ const CentralInteractionHandler = {
 
                 // Notifica Admin
                 NotificationService.notify(client, interaction.guildId, 'config_change', interaction.user, `Idioma alterado para: ${newLang}`);
-                LogService.add(interaction.guildId, 'config_change', interaction.user.tag, `Idioma alterado: ${newLang}`);
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.LANGUAGE_CHANGED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.language_changed', lang, { lang: newLang }),
+                    metadata: { lang: newLang }
+                });
 
                 await interaction.update({
                     content: `✅ **${t('commands.language.changed', newLang, { lang: newLang })}**\n\nPreview: _"${previewInsult}"_`,
@@ -154,7 +159,13 @@ const CentralInteractionHandler = {
                     cleaning[interaction.channelId] = updates;
                     const updatedConfig = ConfigService.update(interaction.guildId, { cleaning });
 
-                    LogService.add(interaction.guildId, 'config_change', interaction.user.tag, `Filtros de Limpeza: ${newFilters.join(', ')}`);
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.CLEAN_RULE_UPDATED,
+                        user: interaction.user,
+                        channelId: interaction.channelId,
+                        description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                        metadata: { filters: newFilters }
+                    });
                     NotificationService.notify(client, interaction.guildId, 'config_change', interaction.user, `Filtros de Limpeza Atualizados: ${newFilters.join(', ')}`);
 
                     await this.showCleaningMenu(interaction, { ...context, config: updatedConfig }, true);
@@ -179,6 +190,14 @@ const CentralInteractionHandler = {
                     const cleaning = config.cleaning || {};
                     cleaning[interaction.channelId] = updates;
                     ConfigService.update(interaction.guildId, { cleaning });
+
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.CLEAN_RULE_UPDATED,
+                        user: interaction.user,
+                        channelId: interaction.channelId,
+                        description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                        metadata: { interval: value }
+                    });
                 }
 
                 const updatedConfig = ConfigService.get(interaction.guildId); // Recarrega config
@@ -214,6 +233,15 @@ const CentralInteractionHandler = {
                     const cleaning = config.cleaning || {};
                     cleaning[interaction.channelId] = { ...currentCleaner, active: false };
                     ConfigService.update(interaction.guildId, { cleaning });
+
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.WINDOW_UPDATED,
+                        user: interaction.user,
+                        channelId: interaction.channelId,
+                        description: t('logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
+                        metadata: { active: false }
+                    });
+
                     const updatedConfig = ConfigService.get(interaction.guildId);
                     await this.showCleaningMenu(interaction, { ...context, config: updatedConfig }, true);
                 }
@@ -232,6 +260,14 @@ const CentralInteractionHandler = {
                 };
 
                 CleaningService.schedule(client, interaction.guildId, interaction.channelId, updates.type, updates.value, updates.filters, updates.exclusions);
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.WINDOW_UPDATED,
+                    user: interaction.user,
+                    channelId: interaction.channelId,
+                    description: t('logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
+                    metadata: { active: true }
+                });
 
                 const updatedConfig = ConfigService.get(interaction.guildId);
                 await this.showCleaningMenu(interaction, { ...context, config: updatedConfig }, true);
@@ -273,7 +309,7 @@ const CentralInteractionHandler = {
                 const exclusions = currentCleaner.exclusions || {};
 
                 await interaction.update({ content: t('commands.clean.start', lang), embeds: [], components: [] });
-                const count = await CleaningService.cleanChannel(client, interaction.channelId, { limit: 100, filters, exclusions });
+                const count = await CleaningService.cleanChannel(client, interaction.channelId, { limit: 100, filters, exclusions, user: interaction.user });
                 await interaction.followUp({ content: t('commands.clean.done', lang, { count }), ephemeral: true });
             }
 
@@ -287,6 +323,15 @@ const CentralInteractionHandler = {
 
                 if (mode === 'off') {
                     CleaningService.disableSchedule(interaction.guildId, interaction.channelId);
+
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.SCHEDULE_UPDATED,
+                        user: interaction.user,
+                        channelId: interaction.channelId,
+                        description: t('logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
+                        metadata: { mode: 'off' }
+                    });
+
                     await this.showCleaningScheduleMenu(interaction, context, true);
                 } else {
                     // Para todos os modos ativos, precisamos de um horário
@@ -329,6 +374,14 @@ const CentralInteractionHandler = {
                     const days = parseInt(mode.split('_')[1]); // 'interval_2' -> 2
                     CleaningService.setSchedule(interaction.guildId, interaction.channelId, 'interval', time, days);
                 }
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.SCHEDULE_UPDATED,
+                    user: interaction.user,
+                    channelId: interaction.channelId,
+                    description: t('logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
+                    metadata: { mode, time }
+                });
 
                 // Não usamos deferUpdate aqui pois showCleaningScheduleMenu já lidará com a resposta/update
                 await this.showCleaningScheduleMenu(interaction, context, true);
@@ -374,6 +427,14 @@ const CentralInteractionHandler = {
                 const cleaning = config.cleaning || {};
                 cleaning[interaction.channelId] = { ...currentCleaner, exclusions };
                 const updatedConfig = ConfigService.update(interaction.guildId, { cleaning });
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.CLEAN_RULE_UPDATED,
+                    user: interaction.user,
+                    channelId: interaction.channelId,
+                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    metadata: { exclusions }
+                });
+
                 await this.showCleaningSafetyMenu(interaction, { ...context, config: updatedConfig }, true);
             }
 
@@ -387,6 +448,14 @@ const CentralInteractionHandler = {
                 const cleaning = config.cleaning || {};
                 cleaning[interaction.channelId] = { ...currentCleaner, exclusions };
                 const updatedConfig = ConfigService.update(interaction.guildId, { cleaning });
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.CLEAN_RULE_UPDATED,
+                    user: interaction.user,
+                    channelId: interaction.channelId,
+                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    metadata: { minAge: exclusions.minAge }
+                });
+
                 await this.showCleaningSafetyMenu(interaction, { ...context, config: updatedConfig }, true);
             }
 
@@ -400,6 +469,14 @@ const CentralInteractionHandler = {
                 const cleaning = config.cleaning || {};
                 cleaning[interaction.channelId] = { ...currentCleaner, exclusions };
                 const updatedConfig = ConfigService.update(interaction.guildId, { cleaning });
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.CLEAN_RULE_UPDATED,
+                    user: interaction.user,
+                    channelId: interaction.channelId,
+                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    metadata: { minReactions: exclusions.minReactions }
+                });
+
                 await this.showCleaningSafetyMenu(interaction, { ...context, config: updatedConfig }, true);
             }
 
@@ -419,6 +496,14 @@ const CentralInteractionHandler = {
             // Menu de Segurança - Seleção de Cargo
             if (customId === 'menu_security_role') {
                 PermissionService.setAuthorizedRoles(interaction.guildId, values);
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.PERMISSION_UPDATED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.permission_updated', lang),
+                    metadata: { roles: values }
+                });
+
                 const embed = new EmbedBuilder()
                     .setTitle(t('success.config_saved', lang))
                     .setDescription(t('success.saved', lang))
@@ -433,6 +518,32 @@ const CentralInteractionHandler = {
                 security.notificationChannel = channelId;
 
                 ConfigService.update(interaction.guildId, { security });
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.CHANNEL_UPDATED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.channel_updated', lang, { type: 'Notificação', channel: interaction.guild.channels.cache.get(channelId)?.name || channelId }),
+                    metadata: { channelId }
+                });
+
+                const embed = new EmbedBuilder()
+                    .setTitle(t('success.config_saved', lang))
+                    .setDescription(t('success.saved', lang))
+                    .setColor('#00FF00');
+                await interaction.update({ embeds: [embed], components: [], content: null });
+            }
+
+            if (customId === 'menu_timezone_select') {
+                const newTz = values[0];
+                ConfigService.update(interaction.guildId, { timezone: newTz });
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.TIMEZONE_CHANGED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.timezone_changed', lang, { tz: newTz }),
+                    metadata: { timezone: newTz }
+                });
+
                 const embed = new EmbedBuilder()
                     .setTitle(t('success.config_saved', lang))
                     .setDescription(t('success.saved', lang))
@@ -494,6 +605,13 @@ const CentralInteractionHandler = {
                 spamConfig.enabled = !spamConfig.enabled;
                 ConfigService.update(interaction.guildId, { antispam: spamConfig });
 
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.ANTISPAM_UPDATED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.antispam_updated', lang),
+                    metadata: { enabled: spamConfig.enabled }
+                });
+
                 await this.showAntiSpamMenu(interaction, context, true);
             }
 
@@ -512,6 +630,14 @@ const CentralInteractionHandler = {
                 if (values.includes('mute')) spamConfig.actions.push('mute');
 
                 ConfigService.update(interaction.guildId, { antispam: spamConfig });
+
+                LogService.add(interaction.guildId, {
+                    type: LogService.Events.ANTISPAM_UPDATED,
+                    user: interaction.user,
+                    description: t('logs.descriptions.antispam_updated', lang),
+                    metadata: spamConfig
+                });
+
                 await this.showAntiSpamMenu(interaction, context, true);
             }
 
@@ -602,7 +728,12 @@ const CentralInteractionHandler = {
 
                 try {
                     DateService.addCustomDate(interaction.guildId, name, day, month, message, channelId, userId);
-                    LogService.add(interaction.guildId, 'date_created', interaction.user.tag, t('dates.log_created', lang, { name }));
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.DATE_CREATED,
+                        user: interaction.user,
+                        description: t('logs.descriptions.date_created', lang, { name }),
+                        metadata: { name, date: `${day}/${month}` }
+                    });
                     await interaction.reply({ content: t('dates.modal.success', lang, { name, day, month }), ephemeral: true });
                     // Tentar atualizar menu anterior se possível, mas como é modal, reply fecha. 
                     // O usuário terá que recarregar o menu.
@@ -622,7 +753,13 @@ const CentralInteractionHandler = {
                     const dName = dObj ? dObj.name : 'Unknown';
 
                     DateService.removeCustomDate(interaction.guildId, dateId);
-                    LogService.add(interaction.guildId, 'date_removed', interaction.user.tag, t('dates.log_removed', lang, { name: dName }));
+
+                    LogService.add(interaction.guildId, {
+                        type: LogService.Events.DATE_REMOVED,
+                        user: interaction.user,
+                        description: t('logs.descriptions.date_removed', lang, { name: dName }),
+                        metadata: { name: dName }
+                    });
 
                     // Refresh menu
                     await this.showDatesMenu(interaction, context, true);
@@ -998,25 +1135,48 @@ const CentralInteractionHandler = {
     },
 
     async showLogsMenu(interaction, { t, lang }, isUpdate = false) {
-        const logs = LogService.get(interaction.guildId, 10);
+        const logs = LogService.get(interaction.guildId, 15);
 
-        const logContent = logs.length > 0
-            ? logs.map(l => {
-                const typeTrans = t(`log_types.${l.type}`, lang) || l.type;
-                // Formatar Data: DD/MM/YYYY - HH:mm:ss
-                const [year, month, day] = l.timestamp.substring(0, 10).split('-');
-                const time = l.timestamp.substring(11, 19);
-                const formattedTime = `${day}/${month}/${year} - ${time}`;
-
-                return `\`${formattedTime}\` **${typeTrans}** (${l.user}): ${l.details}`
-            }).join('\n')
-            : t('menus.logs.empty', lang);
+        const emojiMap = {
+            CLEAN_RULE_UPDATED: '⚙️',
+            CLEAN_EXECUTED_MANUAL: '🗑️',
+            CLEAN_EXECUTED_AUTO: '🤖',
+            CLEAN_EXECUTED_SCHEDULED: '⏰',
+            ANTISPAM_UPDATED: '🛡️',
+            DATE_CREATED: '📅',
+            DATE_REMOVED: '🗑️',
+            DATE_TRIGGERED: '🎉',
+            PERMISSION_UPDATED: '🔑',
+            LANGUAGE_CHANGED: '🌐',
+            TIMEZONE_CHANGED: '🌍',
+            CHANNEL_UPDATED: '📢',
+            SCHEDULE_UPDATED: '📆',
+            WINDOW_UPDATED: '🪟',
+            CONFIG_RESET: '🔄'
+        };
 
         const embed = new EmbedBuilder()
             .setTitle(t('menus.logs.title', lang))
-            .setDescription(logContent)
             .setColor('#FFFF00')
             .setFooter({ text: t('menus.logs.footer', lang) });
+
+        if (logs.length === 0) {
+            embed.setDescription(t('menus.logs.empty', lang));
+        } else {
+            const lines = [...logs].reverse().map(l => {
+                const date = new Date(l.timestamp);
+                const dateStr = date.toLocaleTimeString('pt-BR', { hour: '2-digit', minute: '2-digit' });
+                const dayStr = date.toLocaleDateString('pt-BR', { day: '2-digit', month: '2-digit' });
+                const emoji = emojiMap[l.type] || '📝';
+
+                const channelInfo = l.channelId ? `<#${l.channelId}>` : 'System';
+                const userTag = l.username || 'System';
+
+                return `\`${dayStr} ${dateStr}\` ${emoji} **${userTag}** | ${channelInfo}\n└ ${l.description}`;
+            });
+
+            embed.setDescription(lines.join('\n\n').substring(0, 4000));
+        }
 
         const row = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
@@ -1138,6 +1298,19 @@ const CentralInteractionHandler = {
                 .setChannelTypes([ChannelType.GuildText])
         );
 
+        const rowTimezone = new ActionRowBuilder().addComponents(
+            new StringSelectMenuBuilder()
+                .setCustomId('menu_timezone_select')
+                .setPlaceholder(t('status.field_timezone', lang))
+                .addOptions([
+                    { label: 'UTC (Default)', value: 'UTC' },
+                    { label: 'São Paulo (BRT)', value: 'America/Sao_Paulo' },
+                    { label: 'New York (EST)', value: 'America/New_York' },
+                    { label: 'London (GMT)', value: 'Europe/London' },
+                    { label: 'Tokyo (JST)', value: 'Asia/Tokyo' }
+                ])
+        );
+
         const rowBack = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_back_main')
@@ -1145,7 +1318,7 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        await interaction.reply({ embeds: [embed], components: [rowRoles, rowChannel, rowBack], ephemeral: true });
+        await interaction.reply({ embeds: [embed], components: [rowRoles, rowChannel, rowTimezone, rowBack], ephemeral: true });
     },
 
 };

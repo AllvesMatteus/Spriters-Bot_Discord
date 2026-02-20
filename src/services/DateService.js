@@ -123,7 +123,11 @@ class DateService {
 
                 if (msg !== msgKey) {
                     await targetChannel.send(`📅 **${msg}**`).catch(() => { });
-                    LogService.add(guildId, 'date_triggered', 'GlobalSystem', LocaleService.t('dates.log_triggered', guildLang, { name: globalDate.id, channel: targetChannel.name }));
+                    LogService.add(guildId, {
+                        type: LogService.Events.DATE_TRIGGERED,
+                        description: LocaleService.t('logs.descriptions.date_triggered', guildLang, { name: globalDate.id, channel: targetChannel.name }),
+                        channelId: targetChannel.id
+                    });
                 }
             }
         }
@@ -173,7 +177,11 @@ class DateService {
             }
 
             await channelToSend.send(msg).catch(() => { });
-            LogService.add(guildId, 'date_triggered', 'System', LocaleService.t('dates.log_triggered', guildLang, { name: custom.name, channel: channelToSend.name }));
+            LogService.add(guildId, {
+                type: LogService.Events.DATE_TRIGGERED,
+                description: LocaleService.t('logs.descriptions.date_triggered', guildLang, { name: custom.name, channel: channelToSend.name }),
+                channelId: channelToSend.id
+            });
 
             custom.lastYear = dateObj.getFullYear();
             modified = true;

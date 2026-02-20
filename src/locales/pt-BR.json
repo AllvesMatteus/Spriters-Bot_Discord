@@ -139,7 +139,24 @@
             "confirm_clear_desc": "Isso vai destruir as provas do que eu fiz. Tem certeza?",
             "btn_confirm": "SIM, APAGUE TUDO",
             "btn_cancel": "Não, mantenha as provas",
-            "footer": "Últimos 10 eventos"
+            "footer": "Últimos 15 eventos",
+            "descriptions": {
+                "clean_rule_updated": "Regras de limpeza atualizadas no canal {channel}.",
+                "clean_manual": "Limpeza manual: {count} mensagens removidas no canal {channel}. Filtros: {filters}",
+                "clean_auto": "Limpeza automática: {count} mensagens removidas no canal {channel}. Filtros: {filters}",
+                "clean_scheduled": "Limpeza agendada: {count} mensagens removidas no canal {channel}.",
+                "antispam_updated": "Configuração de Anti-Spam alterada.",
+                "date_created": "Nova data comemorativa registrada: {name}",
+                "date_removed": "Data comemorativa removida: {name}",
+                "date_triggered": "Evento disparado: {name} no canal {channel}.",
+                "permission_updated": "Cargos autorizados atualizados.",
+                "language_changed": "Idioma alterado para: {lang}",
+                "timezone_changed": "Fuso horário alterado para: {tz}",
+                "channel_updated": "Canal de {type} definido para {channel}.",
+                "schedule_updated": "Agendamento de limpeza definido no canal {channel}.",
+                "window_updated": "Janela de operação alterada no canal {channel}.",
+                "config_reset": "Configurações resetadas."
+            }
         },
         "back": "🔙 Voltar",
         "activate": "ATIVAR",

@@ -66,17 +66,39 @@ class CleaningService {
 
                 const trigger = options.trigger || 'manual';
                 const guildId = channel.guildId;
-                const logType = trigger === 'auto' ? 'cleaning_auto' : 'cleaning_manual';
+
+                let logType = LogService.Events.CLEAN_EXECUTED_MANUAL;
+                if (trigger === 'auto') logType = LogService.Events.CLEAN_EXECUTED_AUTO;
+                if (trigger === 'scheduled') logType = LogService.Events.CLEAN_EXECUTED_SCHEDULED;
+
                 const filtersUsed = (options.filters || ['all']).join(', ');
 
-                LogService.add(guildId, logType, 'System', `💬 ${channel.name} | 🗑️ ${messagesToDelete.size} | 🔍 ${filtersUsed}`);
+                const config = ConfigService.get(guildId);
+                const lang = config.language || 'pt-BR';
+
+                let logDescKey = 'logs.descriptions.clean_manual';
+                if (trigger === 'auto') logDescKey = 'logs.descriptions.clean_auto';
+                if (trigger === 'scheduled') logDescKey = 'logs.descriptions.clean_scheduled';
+
+                const logDescription = LocaleService.t(logDescKey, lang, {
+                    channel: channel.name,
+                    count: messagesToDelete.size,
+                    filters: filtersUsed
+                });
+
+                LogService.add(guildId, {
+                    type: logType,
+                    user: options.user || null,
+                    channelId: channel.id,
+                    description: logDescription,
+                    metadata: { count: messagesToDelete.size, filters: filtersUsed }
+                });
 
                 if (trigger === 'auto' || options.notify) {
                     NotificationService.notify(client, guildId, logType, client.user, `Canal: ${channel.name}, Deletadas: ${messagesToDelete.size} msgs.`);
                 }
 
                 // RELATÓRIO DE LIMPEZA
-                const config = ConfigService.get(guildId);
                 const reportEnabled = config.notifications?.cleaningReport?.enabled || false;
 
                 if (reportEnabled) {
@@ -174,7 +196,7 @@ class CleaningService {
                             limit: 100,
                             filters: channelConfig.filters || ['all'],
                             exclusions: channelConfig.exclusions || {},
-                            trigger: 'auto'
+                            trigger: 'scheduled'
                         });
 
                         // Atualiza lastRun se for modo interval
