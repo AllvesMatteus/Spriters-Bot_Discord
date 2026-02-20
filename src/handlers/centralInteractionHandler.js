@@ -1143,6 +1143,7 @@ const CentralInteractionHandler = {
             CLEAN_EXECUTED_AUTO: '🤖',
             CLEAN_EXECUTED_SCHEDULED: '⏰',
             ANTISPAM_UPDATED: '🛡️',
+            ANTISPAM_TRIGGERED: '🚨',
             DATE_CREATED: '📅',
             DATE_REMOVED: '🗑️',
             DATE_TRIGGERED: '🎉',
@@ -1152,7 +1153,8 @@ const CentralInteractionHandler = {
             CHANNEL_UPDATED: '📢',
             SCHEDULE_UPDATED: '📆',
             WINDOW_UPDATED: '🪟',
-            CONFIG_RESET: '🔄'
+            CONFIG_RESET: '🔄',
+            SYSTEM_SKIP: '⏭️'
         };
 
         const embed = new EmbedBuilder()

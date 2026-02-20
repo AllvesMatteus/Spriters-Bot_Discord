@@ -2,6 +2,7 @@ const { ChannelType } = require('discord.js');
 const ConfigService = require('./ConfigService');
 const LogService = require('./LogService');
 const NotificationService = require('./NotificationService');
+const LocaleService = require('./LocaleService');
 
 class CleaningService {
     constructor() {
@@ -76,9 +77,9 @@ class CleaningService {
                 const config = ConfigService.get(guildId);
                 const lang = config.language || 'pt-BR';
 
-                let logDescKey = 'logs.descriptions.clean_manual';
-                if (trigger === 'auto') logDescKey = 'logs.descriptions.clean_auto';
-                if (trigger === 'scheduled') logDescKey = 'logs.descriptions.clean_scheduled';
+                let logDescKey = 'menus.logs.descriptions.clean_manual';
+                if (trigger === 'auto') logDescKey = 'menus.logs.descriptions.clean_auto';
+                if (trigger === 'scheduled') logDescKey = 'menus.logs.descriptions.clean_scheduled';
 
                 const logDescription = LocaleService.t(logDescKey, lang, {
                     channel: channel.name,
@@ -102,7 +103,6 @@ class CleaningService {
                 const reportEnabled = config.notifications?.cleaningReport?.enabled || false;
 
                 if (reportEnabled) {
-                    const LocaleService = require('./LocaleService');
                     const { EmbedBuilder } = require('discord.js');
                     const lang = config.language || 'pt-BR';
                     const t = (key, params) => LocaleService.t(key, lang, params);

@@ -145,6 +145,7 @@
                 "clean_auto": "Auto-cleaning: {count} messages removed in channel {channel}. Filters: {filters}",
                 "clean_scheduled": "Scheduled cleaning: {count} messages removed in channel {channel}.",
                 "antispam_updated": "Anti-Spam configuration changed.",
+                "antispam_triggered": "Anti-Spam triggered for {user}. Reason: {reason}. Actions: {actions}",
                 "date_created": "New commemorative date registered: {name}",
                 "date_removed": "Commemorative date removed: {name}",
                 "date_triggered": "Event triggered: {name} in channel {channel}.",
@@ -154,7 +155,8 @@
                 "channel_updated": "{type} channel set to {channel}.",
                 "schedule_updated": "Cleaning schedule set in channel {channel}.",
                 "window_updated": "Operation window changed in channel {channel}.",
-                "config_reset": "Configurations reset."
+                "config_reset": "Configurations reset.",
+                "system_skip": "Action skipped: {reason}"
             }
         },
         "back": "🔙 Back",

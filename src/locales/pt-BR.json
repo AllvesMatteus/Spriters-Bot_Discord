@@ -146,6 +146,7 @@
                 "clean_auto": "Limpeza automática: {count} mensagens removidas no canal {channel}. Filtros: {filters}",
                 "clean_scheduled": "Limpeza agendada: {count} mensagens removidas no canal {channel}.",
                 "antispam_updated": "Configuração de Anti-Spam alterada.",
+                "antispam_triggered": "Anti-Spam acionado para {user}. Motivo: {reason}. Ações: {actions}",
                 "date_created": "Nova data comemorativa registrada: {name}",
                 "date_removed": "Data comemorativa removida: {name}",
                 "date_triggered": "Evento disparado: {name} no canal {channel}.",
@@ -155,7 +156,8 @@
                 "channel_updated": "Canal de {type} definido para {channel}.",
                 "schedule_updated": "Agendamento de limpeza definido no canal {channel}.",
                 "window_updated": "Janela de operação alterada no canal {channel}.",
-                "config_reset": "Configurações resetadas."
+                "config_reset": "Configurações resetadas.",
+                "system_skip": "Ação ignorada: {reason}"
             }
         },
         "back": "🔙 Voltar",

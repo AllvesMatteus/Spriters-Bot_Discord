@@ -110,7 +110,17 @@ class AntiSpamService {
 
             // Registrar log e notificar
             const actionText = actions.join(', ');
-            LogService.add(message.guild.id, 'antispam_trigger', message.author.tag, `Motivo: ${reason}, Ações: ${actionText}`);
+            LogService.add(message.guild.id, {
+                type: LogService.Events.ANTISPAM_TRIGGERED,
+                user: message.author,
+                channelId: message.channel.id,
+                description: LocaleService.t('menus.logs.descriptions.antispam_triggered', lang, {
+                    user: message.author.tag,
+                    reason: reason,
+                    actions: actionText
+                }),
+                metadata: { reason, actions: actionText }
+            });
 
             NotificationService.notify(
                 message.client,

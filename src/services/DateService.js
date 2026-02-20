@@ -91,7 +91,10 @@ class DateService {
             const isDateToday = GLOBAL_DATES.some(d => d.day === day && d.month === month && !disabledGlobals.includes(d.id));
 
             if (isDateToday) {
-                LogService.add(guildId, 'system_skip', 'System', `Datas Globais Puladas: Nenhum Canal Global Configurado.`);
+                LogService.add(guildId, {
+                    type: LogService.Events.SYSTEM_SKIP,
+                    description: 'Datas Globais Puladas: Nenhum Canal Global Configurado.'
+                });
                 // Notifica admin se possível
                 NotificationService.notify(this.client, guildId, 'system_skip', null, `Data Global perdida! Configure um canal no Menu de Datas.`);
             }
@@ -102,14 +105,20 @@ class DateService {
 
         // Segurança: Canal Inválido
         if (!targetChannel) {
-            LogService.add(guildId, 'system_skip', 'System', `Datas Globais Puladas: ID de Canal Inválido (${globalChannelId})`);
+            LogService.add(guildId, {
+                type: LogService.Events.SYSTEM_SKIP,
+                description: `Datas Globais Puladas: ID de Canal Inválido (${globalChannelId})`
+            });
             NotificationService.notify(this.client, guildId, 'system_skip', null, `Canal Global é inválido/deletado.`);
             return;
         }
 
         // Segurança: Verificação de canal ativo
         if (!(await this.isChannelAlive(targetChannel))) {
-            LogService.add(guildId, 'system_skip', 'System', `Datas Globais Puladas: Canal Morto (${targetChannel.name})`);
+            LogService.add(guildId, {
+                type: LogService.Events.SYSTEM_SKIP,
+                description: `Datas Globais Puladas: Canal Morto (${targetChannel.name})`
+            });
             return;
         }
 
@@ -154,19 +163,28 @@ class DateService {
             // ESTRITO: Canal de Data Personalizada
             const channelId = custom.channelId;
             if (!channelId) {
-                LogService.add(guildId, 'system_skip', 'System', `Data Personalizada '${custom.name}' Pulada: Nenhum Canal Vinculado`);
+                LogService.add(guildId, {
+                    type: LogService.Events.SYSTEM_SKIP,
+                    description: `Data Personalizada '${custom.name}' Pulada: Nenhum Canal Vinculado`
+                });
                 continue;
             }
 
             const channelToSend = this.client.guilds.cache.get(guildId)?.channels.cache.get(channelId);
 
             if (!channelToSend) {
-                LogService.add(guildId, 'system_skip', 'System', `Data Personalizada '${custom.name}' Pulada: Canal Inválido`);
+                LogService.add(guildId, {
+                    type: LogService.Events.SYSTEM_SKIP,
+                    description: `Data Personalizada '${custom.name}' Pulada: Canal Inválido`
+                });
                 continue;
             }
 
             if (!(await this.isChannelAlive(channelToSend))) {
-                LogService.add(guildId, 'system_skip', 'System', `Data Personalizada '${custom.name}' Pulada: Canal Morto (${channelToSend.name})`);
+                LogService.add(guildId, {
+                    type: LogService.Events.SYSTEM_SKIP,
+                    description: `Data Personalizada '${custom.name}' Pulada: Canal Morto (${channelToSend.name})`
+                });
                 continue;
             }
 
