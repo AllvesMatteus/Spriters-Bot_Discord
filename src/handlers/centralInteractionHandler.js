@@ -125,7 +125,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.LANGUAGE_CHANGED,
                     user: interaction.user,
-                    description: t('logs.descriptions.language_changed', lang, { lang: newLang }),
+                    description: t('menus.logs.descriptions.language_changed', lang, { lang: newLang }),
                     metadata: { lang: newLang }
                 });
 
@@ -163,7 +163,7 @@ const CentralInteractionHandler = {
                         type: LogService.Events.CLEAN_RULE_UPDATED,
                         user: interaction.user,
                         channelId: interaction.channelId,
-                        description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                        description: t('menus.logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
                         metadata: { filters: newFilters }
                     });
                     NotificationService.notify(client, interaction.guildId, 'config_change', interaction.user, `Filtros de Limpeza Atualizados: ${newFilters.join(', ')}`);
@@ -195,7 +195,7 @@ const CentralInteractionHandler = {
                         type: LogService.Events.CLEAN_RULE_UPDATED,
                         user: interaction.user,
                         channelId: interaction.channelId,
-                        description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                        description: t('menus.logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
                         metadata: { interval: value }
                     });
                 }
@@ -238,7 +238,7 @@ const CentralInteractionHandler = {
                         type: LogService.Events.WINDOW_UPDATED,
                         user: interaction.user,
                         channelId: interaction.channelId,
-                        description: t('logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
+                        description: t('menus.logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
                         metadata: { active: false }
                     });
 
@@ -265,7 +265,7 @@ const CentralInteractionHandler = {
                     type: LogService.Events.WINDOW_UPDATED,
                     user: interaction.user,
                     channelId: interaction.channelId,
-                    description: t('logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
+                    description: t('menus.logs.descriptions.window_updated', lang, { channel: interaction.channel.name }),
                     metadata: { active: true }
                 });
 
@@ -328,7 +328,7 @@ const CentralInteractionHandler = {
                         type: LogService.Events.SCHEDULE_UPDATED,
                         user: interaction.user,
                         channelId: interaction.channelId,
-                        description: t('logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
+                        description: t('menus.logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
                         metadata: { mode: 'off' }
                     });
 
@@ -379,7 +379,7 @@ const CentralInteractionHandler = {
                     type: LogService.Events.SCHEDULE_UPDATED,
                     user: interaction.user,
                     channelId: interaction.channelId,
-                    description: t('logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
+                    description: t('menus.logs.descriptions.schedule_updated', lang, { channel: interaction.channel.name }),
                     metadata: { mode, time }
                 });
 
@@ -431,7 +431,7 @@ const CentralInteractionHandler = {
                     type: LogService.Events.CLEAN_RULE_UPDATED,
                     user: interaction.user,
                     channelId: interaction.channelId,
-                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    description: t('menus.logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
                     metadata: { exclusions }
                 });
 
@@ -452,7 +452,7 @@ const CentralInteractionHandler = {
                     type: LogService.Events.CLEAN_RULE_UPDATED,
                     user: interaction.user,
                     channelId: interaction.channelId,
-                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    description: t('menus.logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
                     metadata: { minAge: exclusions.minAge }
                 });
 
@@ -473,7 +473,7 @@ const CentralInteractionHandler = {
                     type: LogService.Events.CLEAN_RULE_UPDATED,
                     user: interaction.user,
                     channelId: interaction.channelId,
-                    description: t('logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
+                    description: t('menus.logs.descriptions.clean_rule_updated', lang, { channel: interaction.channel.name }),
                     metadata: { minReactions: exclusions.minReactions }
                 });
 
@@ -500,7 +500,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.PERMISSION_UPDATED,
                     user: interaction.user,
-                    description: t('logs.descriptions.permission_updated', lang),
+                    description: t('menus.logs.descriptions.permission_updated', lang),
                     metadata: { roles: values }
                 });
 
@@ -522,7 +522,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.CHANNEL_UPDATED,
                     user: interaction.user,
-                    description: t('logs.descriptions.channel_updated', lang, { type: 'Notificação', channel: interaction.guild.channels.cache.get(channelId)?.name || channelId }),
+                    description: t('menus.logs.descriptions.channel_updated', lang, { type: 'Notificação', channel: interaction.guild.channels.cache.get(channelId)?.name || channelId }),
                     metadata: { channelId }
                 });
 
@@ -540,7 +540,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.TIMEZONE_CHANGED,
                     user: interaction.user,
-                    description: t('logs.descriptions.timezone_changed', lang, { tz: newTz }),
+                    description: t('menus.logs.descriptions.timezone_changed', lang, { tz: newTz }),
                     metadata: { timezone: newTz }
                 });
 
@@ -608,7 +608,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.ANTISPAM_UPDATED,
                     user: interaction.user,
-                    description: t('logs.descriptions.antispam_updated', lang),
+                    description: t('menus.logs.descriptions.antispam_updated', lang),
                     metadata: { enabled: spamConfig.enabled }
                 });
 
@@ -634,7 +634,7 @@ const CentralInteractionHandler = {
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.ANTISPAM_UPDATED,
                     user: interaction.user,
-                    description: t('logs.descriptions.antispam_updated', lang),
+                    description: t('menus.logs.descriptions.antispam_updated', lang),
                     metadata: spamConfig
                 });
 
@@ -731,7 +731,7 @@ const CentralInteractionHandler = {
                     LogService.add(interaction.guildId, {
                         type: LogService.Events.DATE_CREATED,
                         user: interaction.user,
-                        description: t('logs.descriptions.date_created', lang, { name }),
+                        description: t('menus.logs.descriptions.date_created', lang, { name }),
                         metadata: { name, date: `${day}/${month}` }
                     });
                     await interaction.reply({ content: t('dates.modal.success', lang, { name, day, month }), ephemeral: true });
@@ -757,7 +757,7 @@ const CentralInteractionHandler = {
                     LogService.add(interaction.guildId, {
                         type: LogService.Events.DATE_REMOVED,
                         user: interaction.user,
-                        description: t('logs.descriptions.date_removed', lang, { name: dName }),
+                        description: t('menus.logs.descriptions.date_removed', lang, { name: dName }),
                         metadata: { name: dName }
                     });
 
@@ -883,10 +883,21 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        const payload = { embeds: [embed], components: [rowFilters, rowInterval, rowActions], ephemeral: true };
+        const payload = { embeds: [embed], components: [rowFilters, rowInterval, rowActions] };
 
-        if (isUpdate) await interaction.update(payload);
-        else await interaction.reply(payload);
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update(payload);
+                }
+            } else {
+                await interaction.reply({ ...payload, ephemeral: true });
+            }
+        } catch (err) {
+            console.error('[CleaningMenu] Erro ao responder:', err);
+        }
     },
 
     async showCleaningScheduleMenu(interaction, { t, lang, config }, isUpdate = false) {
@@ -1078,9 +1089,21 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        const payload = { embeds: [embed], components: [rowToggles, rowAge, rowReactions, rowRoles, rowBack], ephemeral: true };
-        if (isUpdate) await interaction.update(payload);
-        else await interaction.reply(payload);
+        const payload = { embeds: [embed], components: [rowToggles, rowAge, rowReactions, rowRoles, rowBack] };
+
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update(payload);
+                }
+            } else {
+                await interaction.reply({ ...payload, ephemeral: true });
+            }
+        } catch (err) {
+            console.error('[SafetyMenu] Erro ao responder:', err);
+        }
     },
 
     async showAntiSpamMenu(interaction, { t, lang }, isUpdate = false) {
@@ -1129,9 +1152,21 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        const payload = { embeds: [embed], components: [rowConfig, rowToggle], ephemeral: true };
-        if (isUpdate) await interaction.update(payload);
-        else await interaction.reply(payload);
+        const payload = { embeds: [embed], components: [rowConfig, rowToggle] };
+
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update(payload);
+                }
+            } else {
+                await interaction.reply({ ...payload, ephemeral: true });
+            }
+        } catch (err) {
+            console.error('[AntiSpamMenu] Erro ao responder:', err);
+        }
     },
 
     async showLogsMenu(interaction, { t, lang }, isUpdate = false) {
@@ -1195,11 +1230,24 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        const payload = { embeds: [embed], components: [row], ephemeral: true };
-        if (isUpdate) {
-            await interaction.update(payload);
-        } else {
-            await interaction.reply(payload);
+        const payload = { embeds: [embed], components: [row] };
+
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update(payload);
+                }
+            } else {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.reply({ ...payload, ephemeral: true });
+                }
+            }
+        } catch (err) {
+            console.error('[LogsMenu] Falha ao responder interação:', err);
         }
     },
 
@@ -1262,8 +1310,20 @@ const CentralInteractionHandler = {
         ));
 
         const payload = { embeds: [embed], components, ephemeral: true };
-        if (isUpdate) await interaction.update(payload);
-        else await interaction.reply(payload);
+
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update({ embeds: [embed], components });
+                }
+            } else {
+                await interaction.reply(payload);
+            }
+        } catch (err) {
+            console.error('[DatesMenu] Erro ao responder:', err);
+        }
     },
 
     async showSecurityMenu(interaction, { t, lang }) {
