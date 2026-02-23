@@ -23,3 +23,7 @@ client.start(process.env.TOKEN || process.env.DISCORD_TOKEN);
 const WebServer = require('./src/api/server');
 const webServer = new WebServer(client);
 webServer.start();
+
+// Inicia sistema anti-hibernação do Render (mantém online)
+const startKeepAlive = require('./src/utils/keepAlive');
+startKeepAlive();
