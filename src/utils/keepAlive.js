@@ -18,8 +18,7 @@ function formatUptime(ms) {
     if (hours > 0) parts.push(`${hours} ${hours === 1 ? 'hora' : 'horas'}`);
 
     if (parts.length === 0) {
-        const mins = totalMin % 60;
-        parts.push(`${mins} ${mins === 1 ? 'minuto' : 'minutos'}`);
+        return 'menos de 1 hora';
     }
 
     if (parts.length > 1) {
@@ -27,7 +26,7 @@ function formatUptime(ms) {
         return parts.join(', ') + ' e ' + last;
     }
 
-    return parts[0] || 'alguns segundos';
+    return parts[0];
 }
 
 /**
@@ -59,7 +58,7 @@ function startKeepAlive() {
                     const uptimeString = formatUptime(agora - startTime);
                     const horaLocal = new Date().toLocaleTimeString('pt-BR');
 
-                    console.log(`[KeepAlive - ${horaLocal}] 🟢 PING BEM-SUCEDIDO (${res.statusCode}). Serviço impecável, ativo há ${uptimeString}! 🚀`);
+                    console.log(`[KeepAlive - ${horaLocal}] 🟢 PING BEM-SUCEDIDO (${res.statusCode}). Serviço ativo há ${uptimeString}!`);
                 }
             }).on('error', (err) => {
                 const horaLocal = new Date().toLocaleTimeString('pt-BR');
