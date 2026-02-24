@@ -70,8 +70,8 @@
                 "btn_yes": "SIM, DESTRUA TUDO",
                 "btn_no": "Cancele, sou fraco"
             },
-            "schedule_btn": "⏱️ Janela de Horário",
-            "schedule_title": "⏰ Janela de Operação",
+            "schedule_btn": "⏱️ Horário de Funcionamento",
+            "schedule_title": "⏰ Horário de Funcionamento",
             "schedule_description": "Defina quando posso trabalhar. Fora desse horário, eu durmo.",
             "schedule_on_desc": "Horário ATIVO: **{start}** às **{end}**",
             "schedule_off_desc": "Programação DESATIVADA (Operando 24h)",
@@ -155,7 +155,7 @@
                 "timezone_changed": "Fuso horário alterado para: {tz}",
                 "channel_updated": "Canal de {type} definido para {channel}.",
                 "schedule_updated": "Agendamento de limpeza definido no canal {channel}.",
-                "window_updated": "Janela de operação alterada no canal {channel}.",
+                "window_updated": "Horário de funcionamento alterado no canal {channel}.",
                 "config_reset": "Configurações resetadas.",
                 "system_skip": "Ação ignorada: {reason}"
             }
@@ -313,7 +313,7 @@
         "title": "🧹 Relatório de Limpeza",
         "deleted": "Total removido",
         "auto": "Auto-Limpeza",
-        "schedule": "Janela de Horário",
+        "schedule": "Horário de Funcionamento",
         "schedule_24h": "Operando 24h",
         "pinned": "Ignorar Fixadas",
         "bots": "Ignorar Bots",

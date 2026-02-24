@@ -90,41 +90,68 @@ module.exports = {
             permissionContent = t('status.perm_default', lang);
         }
 
+        // --- 5. HORÁRIO DE FUNCIONAMENTO (AGENDAMENTO) ---
+        let scheduleContent = '';
+        if (channelCleaner && channelCleaner.schedule && channelCleaner.schedule.mode && channelCleaner.schedule.mode !== 'off') {
+            const sch = channelCleaner.schedule;
+            const modeLabel = lang === 'en-US' ? 'Mode' : 'Modo';
+            const timeLabel = lang === 'en-US' ? 'Time' : 'Horário';
+            let modeVal = '';
+            if (sch.mode === 'daily') {
+                modeVal = lang === 'en-US' ? 'Daily' : 'Diário';
+            } else if (sch.mode === 'interval') {
+                modeVal = lang === 'en-US' ? `Every ${sch.intervalDays} days` : `A cada ${sch.intervalDays} dias`;
+            }
+            scheduleContent = `**${modeLabel}:** ${modeVal}\n**${timeLabel}:** ${sch.time}`;
+        }
+
+        const embedFields = [
+            {
+                name: t('status.section_general', lang),
+                value: `**${t('status.field_lang', lang)}:** ${langDisplay}\n**${t('status.field_timezone', lang)}:** ${config.timezone || 'UTC'}`,
+                inline: true
+            },
+            {
+                name: t('status.section_modules', lang),
+                value: modulesContent,
+                inline: true
+            },
+            {
+                name: t('dates.embed_title', lang),
+                value: (config.dates?.customs || []).length > 0
+                    ? (config.dates.customs.slice(0, 5).map(c => `${c.name} (${String(c.day).padStart(2, '0')}/${String(c.month).padStart(2, '0')})`).join('\n') + (config.dates.customs.length > 5 ? `\n+${config.dates.customs.length - 5} ...` : ''))
+                    : t('dates.field_none', lang),
+                inline: false
+            }
+        ];
+
+        if (scheduleContent) {
+            embedFields.push({
+                name: t('menus.cleaning.schedule_title', lang) || "⏱️ Horário de Funcionamento",
+                value: scheduleContent,
+                inline: false
+            });
+        }
+
+        embedFields.push(
+            {
+                name: t('status.section_protection', lang),
+                value: protectionContent,
+                inline: false
+            },
+            {
+                name: t('status.section_permissions', lang),
+                value: `**${t('status.perm_roles', lang)}:**\n${permissionContent}`,
+                inline: false
+            }
+        );
+
         // --- CONSTRUCT EMBED ---
         const embed = new EmbedBuilder()
             .setTitle(t('status.title', lang)) // Relatório de Dominância
             .setDescription(t('status.description', lang)) // Resumo operacional...
             .setColor('#0099ff')
-            .addFields(
-                {
-                    name: t('status.section_general', lang),
-                    value: `**${t('status.field_lang', lang)}:** ${langDisplay}\n**${t('status.field_timezone', lang)}:** ${config.timezone || 'UTC'}`,
-                    inline: true
-                },
-                {
-                    name: t('status.section_modules', lang),
-                    value: modulesContent,
-                    inline: true
-                },
-                {
-                    name: t('dates.embed_title', lang),
-                    value: (config.dates?.customs || []).length > 0
-                        ? (config.dates.customs.slice(0, 5).map(c => `${c.name} (${String(c.day).padStart(2, '0')}/${String(c.month).padStart(2, '0')})`).join('\n') + (config.dates.customs.length > 5 ? `\n+${config.dates.customs.length - 5} ...` : ''))
-                        : t('dates.field_none', lang),
-                    inline: false
-                },
-                // Divider or just next field full width
-                {
-                    name: t('status.section_protection', lang),
-                    value: protectionContent,
-                    inline: false
-                },
-                {
-                    name: t('status.section_permissions', lang),
-                    value: `**${t('status.perm_roles', lang)}:**\n${permissionContent}`,
-                    inline: false
-                }
-            )
+            .addFields(embedFields)
             .setFooter({ text: t('status.footer', lang, { time: new Date().toLocaleTimeString(lang, { timeZone: config.timezone || 'UTC' }) }) });
 
         const { ActionRowBuilder, ButtonBuilder, ButtonStyle } = require('discord.js');

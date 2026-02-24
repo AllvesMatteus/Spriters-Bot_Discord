@@ -46,34 +46,7 @@ const CentralInteractionHandler = {
                 if (!PermissionService.canManageBot(member)) {
                     return interaction.reply({ content: t('errors.unauthorized', lang), ephemeral: true });
                 }
-                const embed = new EmbedBuilder()
-                    .setTitle(t('menus.main.embed_title', lang))
-                    .setDescription(t('commands.setup.start_description', lang))
-                    .setColor('#9933ff')
-                    .addFields(
-                        { name: 'Status', value: t('system.status', lang), inline: true }
-                    );
-
-                const select = new StringSelectMenuBuilder()
-                    .setCustomId('menu_main_select')
-                    .setPlaceholder(t('menus.main.placeholder', lang))
-                    .addOptions([
-                        { label: t('menus.main.options.cleaning_label', lang), description: t('menus.main.options.cleaning_desc', lang), value: 'cleaning', emoji: '🧹' },
-                        { label: t('menus.main.options.antispam_label', lang), description: t('menus.main.options.antispam_desc', lang), value: 'antispam', emoji: '🛡️' },
-                        { label: t('menus.main.options.logs_label', lang), description: t('menus.main.options.logs_desc', lang), value: 'logs', emoji: '📝' },
-                        { label: t('menus.main.options.permissions_label', lang), description: t('menus.main.options.permissions_desc', lang), value: 'security', emoji: '👮' },
-                        { label: t('menus.main.options.dates_label', lang), description: t('menus.main.options.dates_desc', lang), value: 'dates', emoji: '📅' },
-                        { label: 'Idioma / Language', description: 'Change language', value: 'language', emoji: '🗣️' },
-                    ]);
-
-                const row = new ActionRowBuilder().addComponents(select);
-
-                await interaction.update({
-                    content: t('commands.setup.welcome_msg', lang),
-                    embeds: [embed],
-                    components: [row],
-                    ephemeral: true
-                });
+                await this.showMainMenu(interaction, context, false);
             }
 
             // Navegação do Menu Principal
@@ -552,11 +525,7 @@ const CentralInteractionHandler = {
             }
             // Botão Voltar
             if (customId === 'btn_back_main') {
-                // Ack
-                // Tratamento seguro se já respondeu
-                try {
-                    await interaction.update({ content: t('errors.anxiety', lang), components: [] });
-                } catch (e) {/* ignore */ }
+                await this.showMainMenu(interaction, context, true);
             }
 
             /**
@@ -879,7 +848,7 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary),
             new ButtonBuilder()
                 .setCustomId('btn_back_main')
-                .setLabel('🔙')
+                .setLabel(t('menus.back', lang))
                 .setStyle(ButtonStyle.Secondary)
         );
 
@@ -987,7 +956,7 @@ const CentralInteractionHandler = {
                 .setDisabled(!schedule || !schedule.mode),
             new ButtonBuilder()
                 .setCustomId('btn_back_cleaning')
-                .setLabel('🔙 Voltar')
+                .setLabel(t('menus.back', lang))
                 .setStyle(ButtonStyle.Secondary)
         );
 
@@ -1085,7 +1054,7 @@ const CentralInteractionHandler = {
         const rowBack = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_back_cleaning')
-                .setLabel('🔙 Voltar')
+                .setLabel(t('menus.back', lang))
                 .setStyle(ButtonStyle.Secondary)
         );
 
@@ -1376,12 +1345,57 @@ const CentralInteractionHandler = {
         const rowBack = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_back_main')
-                .setLabel('🔙 Voltar')
+                .setLabel(t('menus.back', lang))
                 .setStyle(ButtonStyle.Secondary)
         );
 
         await interaction.reply({ embeds: [embed], components: [rowRoles, rowChannel, rowTimezone, rowBack], ephemeral: true });
     },
+
+    async showMainMenu(interaction, { t, lang }, isUpdate = false) {
+        const embed = new EmbedBuilder()
+            .setTitle(t('menus.main.embed_title', lang))
+            .setDescription(t('commands.setup.start_description', lang))
+            .setColor('#9933ff')
+            .addFields(
+                { name: 'Status', value: t('system.status', lang), inline: true }
+            );
+
+        const select = new StringSelectMenuBuilder()
+            .setCustomId('menu_main_select')
+            .setPlaceholder(t('menus.main.placeholder', lang))
+            .addOptions([
+                { label: t('menus.main.options.cleaning_label', lang), description: t('menus.main.options.cleaning_desc', lang), value: 'cleaning', emoji: '🧹' },
+                { label: t('menus.main.options.antispam_label', lang), description: t('menus.main.options.antispam_desc', lang), value: 'antispam', emoji: '🛡️' },
+                { label: t('menus.main.options.logs_label', lang), description: t('menus.main.options.logs_desc', lang), value: 'logs', emoji: '📝' },
+                { label: t('menus.main.options.permissions_label', lang), description: t('menus.main.options.permissions_desc', lang), value: 'security', emoji: '👮' },
+                { label: t('menus.main.options.dates_label', lang), description: t('menus.main.options.dates_desc', lang), value: 'dates', emoji: '📅' },
+                { label: 'Idioma / Language', description: 'Change language', value: 'language', emoji: '🗣️' },
+            ]);
+
+        const row = new ActionRowBuilder().addComponents(select);
+
+        const payload = {
+            content: t('commands.setup.welcome_msg', lang),
+            embeds: [embed],
+            components: [row],
+            ephemeral: true
+        };
+
+        try {
+            if (isUpdate) {
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.update(payload);
+                }
+            } else {
+                await interaction.reply(payload);
+            }
+        } catch (err) {
+            console.error('[MainMenu] Erro ao responder:', err);
+        }
+    }
 
 };
 
