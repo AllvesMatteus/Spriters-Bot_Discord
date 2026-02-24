@@ -4,16 +4,19 @@ function formatUptime(ms) {
     const totalMin = Math.floor(ms / (1000 * 60));
     const totalHours = Math.floor(totalMin / 60);
     const totalDays = Math.floor(totalHours / 24);
-    const months = Math.floor(totalDays / 30);
 
-    const days = totalDays % 30;
+    const years = Math.floor(totalDays / 365);
+    const remainingDaysAfterYears = totalDays % 365;
+    const months = Math.floor(remainingDaysAfterYears / 30);
+    const days = remainingDaysAfterYears % 30;
     const hours = totalHours % 24;
-    
+
     let parts = [];
+    if (years > 0) parts.push(`${years} ${years === 1 ? 'ano' : 'anos'}`);
     if (months > 0) parts.push(`${months} ${months === 1 ? 'mês' : 'meses'}`);
     if (days > 0) parts.push(`${days} ${days === 1 ? 'dia' : 'dias'}`);
     if (hours > 0) parts.push(`${hours} ${hours === 1 ? 'hora' : 'horas'}`);
-    
+
     if (parts.length === 0) {
         const mins = totalMin % 60;
         parts.push(`${mins} ${mins === 1 ? 'minuto' : 'minutos'}`);
@@ -23,8 +26,8 @@ function formatUptime(ms) {
         const last = parts.pop();
         return parts.join(', ') + ' e ' + last;
     }
-    
-    return parts[0];
+
+    return parts[0] || 'alguns segundos';
 }
 
 /**
@@ -48,14 +51,14 @@ function startKeepAlive() {
         setInterval(() => {
             https.get(url, (res) => {
                 const agora = Date.now();
-                
+
                 // Mostrar a mensagem a cada ~1 hora (3.600.000 ms)
                 // Permitimos uma margem de segurança de 1 minuto a menos por causa de possíveis imprecisões do setInterval
                 if (agora - lastLogTime >= 59 * 60 * 1000) {
                     lastLogTime = agora;
                     const uptimeString = formatUptime(agora - startTime);
                     const horaLocal = new Date().toLocaleTimeString('pt-BR');
-                    
+
                     console.log(`[KeepAlive - ${horaLocal}] 🟢 PING BEM-SUCEDIDO (${res.statusCode}). Serviço impecável, ativo há ${uptimeString}! 🚀`);
                 }
             }).on('error', (err) => {
