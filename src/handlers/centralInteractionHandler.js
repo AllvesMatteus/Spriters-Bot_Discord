@@ -862,7 +862,11 @@ const CentralInteractionHandler = {
                     await interaction.update(payload);
                 }
             } else {
-                await interaction.reply({ ...payload, ephemeral: true });
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.reply({ ...payload, ephemeral: true });
+                }
             }
         } catch (err) {
             console.error('[CleaningMenu] Erro ao responder:', err);
@@ -1131,7 +1135,11 @@ const CentralInteractionHandler = {
                     await interaction.update(payload);
                 }
             } else {
-                await interaction.reply({ ...payload, ephemeral: true });
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.reply({ ...payload, ephemeral: true });
+                }
             }
         } catch (err) {
             console.error('[AntiSpamMenu] Erro ao responder:', err);
@@ -1285,10 +1293,14 @@ const CentralInteractionHandler = {
                 if (interaction.deferred || interaction.replied) {
                     await interaction.editReply(payload);
                 } else {
-                    await interaction.update({ embeds: [embed], components });
+                    await interaction.update(payload);
                 }
             } else {
-                await interaction.reply(payload);
+                if (interaction.deferred || interaction.replied) {
+                    await interaction.editReply(payload);
+                } else {
+                    await interaction.reply({ ...payload, ephemeral: true });
+                }
             }
         } catch (err) {
             console.error('[DatesMenu] Erro ao responder:', err);
@@ -1349,7 +1361,11 @@ const CentralInteractionHandler = {
                 .setStyle(ButtonStyle.Secondary)
         );
 
-        await interaction.reply({ embeds: [embed], components: [rowRoles, rowChannel, rowTimezone, rowBack], ephemeral: true });
+        if (interaction.deferred || interaction.replied) {
+            await interaction.editReply({ embeds: [embed], components: [rowRoles, rowChannel, rowTimezone, rowBack], ephemeral: true });
+        } else {
+            await interaction.reply({ embeds: [embed], components: [rowRoles, rowChannel, rowTimezone, rowBack], ephemeral: true });
+        }
     },
 
     async showMainMenu(interaction, { t, lang }, isUpdate = false) {

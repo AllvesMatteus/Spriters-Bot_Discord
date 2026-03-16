@@ -24,7 +24,7 @@ module.exports = {
         const channelConfig = config.cleaning?.[interaction.channelId] || {};
         const filters = channelConfig.filters || ['all'];
 
-        await interaction.reply({ content: t('commands.clean.start', lang), ephemeral: true });
+        await interaction.editReply({ content: t('commands.clean.start', lang) });
 
         const deletedCount = await CleaningService.cleanChannel(
             interaction.client,

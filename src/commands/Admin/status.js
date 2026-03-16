@@ -8,6 +8,9 @@ module.exports = {
         .setName('status')
         .setDescription('Exibe o resumo administrativo do bot.'),
     async execute(interaction, { t, lang }) {
+        // Defer para evitar timeout no Render (limite de 3s do Discord)
+        await interaction.deferReply({ ephemeral: true });
+
         const isAdmin = PermissionService.canManageBot(interaction.member);
         const config = ConfigService.get(interaction.guildId);
 
@@ -177,6 +180,6 @@ module.exports = {
             );
         }
 
-        await interaction.reply({ embeds: [embed], components: [row], ephemeral: true });
+        await interaction.editReply({ embeds: [embed], components: [row], ephemeral: true });
     },
 };

@@ -1,6 +1,7 @@
 const { Events } = require('discord.js');
 const ConfigService = require('../services/ConfigService');
 const LocaleService = require('../services/LocaleService');
+const interactionHandler = require('../handlers/centralInteractionHandler');
 
 module.exports = {
     name: Events.InteractionCreate,
@@ -19,23 +20,38 @@ module.exports = {
             }
 
             try {
-                // Correção: Vincula 't' para preservar o contexto 'this' dentro de LocaleService
+                // Defer para evitar timeout no Render (limite de 3s do Discord)
+                // Quase todos os comandos administrativos são efêmeros
+                if (!interaction.deferred && !interaction.replied) {
+                    await interaction.deferReply({ ephemeral: true });
+                }
+
+                // Executa o comando
                 await command.execute(interaction, { client, config, lang, t: LocaleService.t.bind(LocaleService) });
             } catch (error) {
                 console.error(`Erro ao executar ${interaction.commandName}`);
                 console.error(error);
-                if (interaction.replied || interaction.deferred) {
-                    await interaction.followUp({ content: 'Houve um erro ao executar este comando!', ephemeral: true });
-                } else {
-                    await interaction.reply({ content: 'Houve um erro ao executar este comando!', ephemeral: true });
+                
+                // Tenta avisar o usuário do erro de forma segura
+                const errorPayload = { content: 'Houve um erro ao executar este comando!', ephemeral: true };
+                try {
+                    if (interaction.replied || interaction.deferred) {
+                        await interaction.followUp(errorPayload);
+                    } else {
+                        await interaction.reply(errorPayload);
+                    }
+                } catch (e) {
+                    console.error('Falha ao enviar mensagem de erro:', e.message);
                 }
             }
         }
         // Outras interações (Botões, Menus)
         else {
-            const interactionHandler = require('../handlers/centralInteractionHandler');
-            // Correção: Vincula 't' aqui também
-            await interactionHandler.handle(interaction, { client, config, lang, t: LocaleService.t.bind(LocaleService) });
+            try {
+                await interactionHandler.handle(interaction, { client, config, lang, t: LocaleService.t.bind(LocaleService) });
+            } catch (error) {
+                console.error('Erro no interactionHandler:', error);
+            }
         }
     },
 };

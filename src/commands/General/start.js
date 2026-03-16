@@ -52,11 +52,10 @@ module.exports = {
 
         const row = new ActionRowBuilder().addComponents(select);
 
-        await interaction.reply({
+        await interaction.editReply({
             content: t('commands.setup.welcome_msg', lang),
             embeds: [embed],
-            components: [row],
-            ephemeral: true
+            components: [row]
         });
     },
 };
