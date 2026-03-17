@@ -8,7 +8,7 @@ module.exports = {
         .setDescription('Exibe os logs do sistema.'),
     async execute(interaction, { t, lang }) {
         if (!PermissionService.canManageBot(interaction.member)) {
-            return interaction.reply({ content: t('errors.permission_denied', lang), ephemeral: true });
+            return interaction.editReply({ content: t('errors.permission_denied', lang) });
         }
 
         const context = {

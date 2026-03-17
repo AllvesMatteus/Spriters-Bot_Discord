@@ -29,11 +29,6 @@ function formatUptime(ms) {
     return parts[0];
 }
 
-/**
- * Função responsável por manter o serviço acordado 24 horas.
- * O Render.com coloca projetos gratuitos para dormir após 15 minutos sem requisições externas.
- * Essa função captura a URL exposta automaticamente e faz requisições a cada 12 minutos.
- */
 function startKeepAlive() {
     // RENDER_EXTERNAL_URL é uma variável injetada automaticamente pelo Render
     const url = process.env.RENDER_EXTERNAL_URL;
@@ -51,15 +46,10 @@ function startKeepAlive() {
             https.get(url, (res) => {
                 const agora = Date.now();
 
-                // Mostrar a mensagem a cada ~1 hora (3.600.000 ms)
-                // Permitimos uma margem de segurança de 1 minuto a menos por causa de possíveis imprecisões do setInterval
-                if (agora - lastLogTime >= 59 * 60 * 1000) {
-                    lastLogTime = agora;
-                    const uptimeString = formatUptime(agora - startTime);
-                    const horaLocal = new Date().toLocaleTimeString('pt-BR');
-
-                    console.log(`[KeepAlive - ${horaLocal}] 🟢 PING BEM-SUCEDIDO (${res.statusCode}). Serviço ativo há ${uptimeString}!`);
-                }
+                // Logamos todos os pings (a cada 12 min) para confirmar que o bot não dormiu
+                const uptimeString = formatUptime(agora - startTime);
+                const horaLocal = new Date().toLocaleTimeString('pt-BR');
+                console.log(`[KeepAlive - ${horaLocal}] 🟢 PING BEM-SUCEDIDO (${res.statusCode}). Serviço ativo há ${uptimeString}!`);
             }).on('error', (err) => {
                 const horaLocal = new Date().toLocaleTimeString('pt-BR');
                 console.error(`[KeepAlive - ${horaLocal}] 🔴 FALHA ao tentar pingar o bot: ${err.message}`);

@@ -6,6 +6,33 @@ const interactionHandler = require('../handlers/centralInteractionHandler');
 module.exports = {
     name: Events.InteractionCreate,
     async execute(interaction, client) {
+        const start = Date.now();
+        const latency = start - interaction.createdTimestamp;
+
+        // Log de diagnóstico para entender atrasos no Render
+        if (latency > 2000) {
+            console.warn(`[InteractionCreate] ⚠️ Interação recebida com ALTO ATRASO (${latency}ms). Provável lentidão no Render.`);
+        }
+        
+        // Defer IMEDIATAMENTE para garantir a interação no Discord
+        // O limite é de 3 segundos. No Render Free, cada milissegundo conta.
+        if (interaction.isChatInputCommand() || interaction.isButton() || interaction.isStringSelectMenu()) {
+            try {
+                // Tenta dar defer. Se já passou de 3s, isso vai falhar com "Unknown Interaction"
+                if (interaction.isChatInputCommand()) {
+                    await interaction.deferReply({ ephemeral: true });
+                } else {
+                    // Para botões e menus, usamos deferUpdate para evitar o erro de "aplicativo não respondeu"
+                    // enquanto o bot processa a próxima tela
+                    await interaction.deferUpdate().catch(() => {});
+                }
+            } catch (e) {
+                console.error(`[InteractionCreate] ❌ Erro Crítico no Defer (${interaction.id}): ${e.message}`);
+                // Se falhou aqui, não adianta continuar, a interação expirou no Discord
+                return;
+            }
+        }
+
         const guildId = interaction.guildId;
         const config = ConfigService.get(guildId);
         const lang = config.language;
@@ -20,14 +47,13 @@ module.exports = {
             }
 
             try {
-                // Defer para evitar timeout no Render (limite de 3s do Discord)
-                // Quase todos os comandos administrativos são efêmeros
-                if (!interaction.deferred && !interaction.replied) {
-                    await interaction.deferReply({ ephemeral: true });
-                }
-
-                // Executa o comando
+                // Executa o comando (já deu defer acima)
                 await command.execute(interaction, { client, config, lang, t: LocaleService.t.bind(LocaleService) });
+                
+                const duration = Date.now() - start;
+                if (duration > 2500) {
+                    console.warn(`[InteractionCreate] Comando /${interaction.commandName} demorou ${duration}ms para processar!`);
+                }
             } catch (error) {
                 console.error(`Erro ao executar ${interaction.commandName}`);
                 console.error(error);
