@@ -14,7 +14,6 @@ const CentralInteractionHandler = {
         const { client, config, lang, t } = context;
         const { customId, values, member } = interaction;
 
-        // Verificação de permissão para ações sensíveis
         const sensitiveIDs = [
             'menu_main_select',
             'menu_cleaning_filters',
@@ -41,7 +40,6 @@ const CentralInteractionHandler = {
         }
 
         try {
-            // Botão de atalho do /status para configurar
             if (customId === 'btn_main_menu') {
                 if (!PermissionService.canManageBot(member)) {
                     return interaction.reply({ content: t('errors.unauthorized', lang), ephemeral: true });
@@ -49,7 +47,6 @@ const CentralInteractionHandler = {
                 await this.showMainMenu(interaction, context, false);
             }
 
-            // Navegação do Menu Principal
             if (customId === 'menu_main_select') {
                 const selected = values[0];
                 switch (selected) {
@@ -76,7 +73,6 @@ const CentralInteractionHandler = {
                 }
             }
 
-            // Botão de Onboarding
             if (customId === 'onboarding_configure') {
                 await interaction.reply({
                     content: t('commands.setup.welcome_msg', lang),
@@ -85,15 +81,12 @@ const CentralInteractionHandler = {
                 });
             }
 
-            // Idioma alterado
             if (customId === 'menu_language_select') {
                 const newLang = values[0];
                 ConfigService.update(interaction.guildId, { language: newLang });
 
-                // Pega insulto no novo idioma para preview (mantendo característica do bot)
                 const previewInsult = LocaleService.t('insults', newLang);
 
-                // Notifica Admin
                 NotificationService.notify(client, interaction.guildId, 'config_change', interaction.user, `Idioma alterado para: ${newLang}`);
                 LogService.add(interaction.guildId, {
                     type: LogService.Events.LANGUAGE_CHANGED,
@@ -108,7 +101,6 @@ const CentralInteractionHandler = {
                 });
             }
 
-            // Handlers do Menu de Limpeza
             if (customId === 'menu_cleaning_filters') {
                 const config = ConfigService.get(interaction.guildId);
                 const currentCleaner = config.cleaning?.[interaction.channelId] || {};
@@ -466,7 +458,6 @@ const CentralInteractionHandler = {
                 await this.showCleaningSafetyMenu(interaction, { ...context, config: updatedConfig }, true);
             }
 
-            // Menu de Segurança - Seleção de Cargo
             if (customId === 'menu_security_role') {
                 PermissionService.setAuthorizedRoles(interaction.guildId, values);
 
@@ -523,14 +514,11 @@ const CentralInteractionHandler = {
                     .setColor('#00FF00');
                 await interaction.update({ embeds: [embed], components: [], content: null });
             }
-            // Botão Voltar
             if (customId === 'btn_back_main') {
                 await this.showMainMenu(interaction, context, true);
             }
 
-            /**
-             * HANDLERS DE LOGS
-             */
+
             if (customId === 'btn_logs_refresh') {
                 await this.showLogsMenu(interaction, context, true);
             }
@@ -564,9 +552,7 @@ const CentralInteractionHandler = {
                 await interaction.update({ embeds: [embed], components: [], content: null });
             }
 
-            /**
-             * HANDLERS DE ANTISPAM
-             */
+
             if (customId === 'btn_antispam_toggle') {
                 const config = ConfigService.get(interaction.guildId);
                 const spamConfig = config.antispam || { enabled: false, actions: ['delete'], blockFlood: true, blockRepeated: true };
@@ -610,15 +596,12 @@ const CentralInteractionHandler = {
                 await this.showAntiSpamMenu(interaction, context, true);
             }
 
-            /**
-             * HANDLERS DE DATAS
-             */
+
             if (customId === 'btn_dates_refresh') {
                 await this.showDatesMenu(interaction, context, true);
             }
 
             if (customId === 'btn_dates_new') {
-                // Passo 1: Selecionar o canal para o novo evento
                 const row = new ActionRowBuilder().addComponents(
                     new ChannelSelectMenuBuilder()
                         .setCustomId('menu_date_channel_select')
@@ -635,10 +618,6 @@ const CentralInteractionHandler = {
             }
 
             if (customId === 'menu_date_channel_select') {
-                // Passo 2: Mostrar Modal com ID do canal embutido no customId ou guardado temporariamente?
-                // Como Modal não passa contexto extra facilmente, vou embutir o channelId no ID do modal se possível, ou usar cache temporário.
-                // Mas IDs de modal tem limite de caracteres.
-                // Vou embutir: modal_date_create_<channelId>
                 const channelId = values[0];
                 const modal = new ModalBuilder()
                     .setCustomId(`modal_date_create_${channelId}`)
@@ -685,7 +664,6 @@ const CentralInteractionHandler = {
                 const message = interaction.fields.getTextInputValue('date_message') || t('dates.default_custom', lang, { name });
                 const userId = interaction.user.id;
 
-                // Validar data
                 const [dayStr, monthStr] = dateVal.split('/');
                 const day = parseInt(dayStr);
                 const month = parseInt(monthStr);
@@ -730,7 +708,6 @@ const CentralInteractionHandler = {
                         metadata: { name: dName }
                     });
 
-                    // Refresh menu
                     await this.showDatesMenu(interaction, context, true);
                 }
             }
@@ -908,7 +885,6 @@ const CentralInteractionHandler = {
             .setDescription(`Defina quando o bot deve executar a limpeza automática deste canal.\n\n${statusText}\n\n**Próxima Execução:** ${nextRun}\n**Fuso Horário:** ${timezone}`)
             .setColor(statusColor);
 
-        // Seletor de Modo
         const rowMode = new ActionRowBuilder().addComponents(
             new StringSelectMenuBuilder()
                 .setCustomId('menu_schedule_mode')
@@ -951,7 +927,6 @@ const CentralInteractionHandler = {
                 ])
         );
 
-        // Botões de Ação
         const rowActions = new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_schedule_test')
@@ -1237,7 +1212,6 @@ const CentralInteractionHandler = {
             .setTitle(t('dates.embed_title', lang))
             .setColor('#E91E63');
 
-        // Field: Datas Registradas
         let registeredValue = '';
         if (customs.length > 0) {
             registeredValue = customs.map(c => {
@@ -1255,7 +1229,6 @@ const CentralInteractionHandler = {
 
         const components = [];
 
-        // Select Menu para Remover
         if (customs.length > 0) {
             components.push(new ActionRowBuilder().addComponents(
                 new StringSelectMenuBuilder()
@@ -1269,7 +1242,6 @@ const CentralInteractionHandler = {
             ));
         }
 
-        // Botões de Ação
         components.push(new ActionRowBuilder().addComponents(
             new ButtonBuilder()
                 .setCustomId('btn_dates_new') // Mantive ID original pois já há handler para ele

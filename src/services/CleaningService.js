@@ -10,12 +10,6 @@ class CleaningService {
         this.schedulerInterval = null; // Timer global de agendamento
     }
 
-    /**
-     * Limpa mensagens de um canal com filtros opcionais
-     * @param {Client} client 
-     * @param {string} channelId 
-     * @param {object} options { limit: 100, filters: ['bots', 'links'], exclusions: { ignorePinned: true, ignoreBots: false, minReactions: 0, ignoreRoles: [], minAge: 0 } }
-     */
     async cleanChannel(client, channelId, options = {}) {
         try {
             const channel = await client.channels.fetch(channelId);
@@ -24,7 +18,7 @@ class CleaningService {
             const limit = options.limit || 100;
             const fetched = await channel.messages.fetch({ limit });
 
-            // Exclusões / Proteções
+
             const exclusions = options.exclusions || {};
             const ignorePinned = exclusions.ignorePinned !== false;
             const ignoreSystem = exclusions.ignoreSystem !== false;
@@ -33,24 +27,24 @@ class CleaningService {
             const ignoreRoles = exclusions.ignoreRoles || [];
             const minAgeMinutes = exclusions.minAge !== undefined ? exclusions.minAge : 5;
 
-            // Filtros
+
             const messagesToDelete = fetched.filter(msg => {
                 const filters = options.filters || [];
 
-                // PROTEÇÕES DO SISTEMA
+
                 if (ignorePinned && msg.pinned) return false;
                 if (ignoreSystem && msg.system) return false;
                 if (ignoreBots && msg.author.bot) return false;
                 if (minReactions > 0 && msg.reactions.cache.size >= minReactions) return false;
                 if (ignoreRoles.length > 0 && msg.member && msg.member.roles.cache.some(r => ignoreRoles.includes(r.id))) return false;
 
-                // Idade Mínima
+
                 if (minAgeMinutes > 0) {
                     const ageMs = Date.now() - msg.createdTimestamp;
                     if (ageMs < minAgeMinutes * 60000) return false;
                 }
 
-                // FILTROS DE EXCLUSÃO
+
                 if (filters.length === 0 || filters.includes('all')) return true;
 
                 let matches = false;
@@ -99,7 +93,7 @@ class CleaningService {
                     NotificationService.notify(client, guildId, logType, client.user, `Canal: ${channel.name}, Deletadas: ${messagesToDelete.size} msgs.`);
                 }
 
-                // RELATÓRIO DE LIMPEZA
+
                 const reportEnabled = config.notifications?.cleaningReport?.enabled || false;
 
                 if (reportEnabled) {
@@ -150,9 +144,6 @@ class CleaningService {
         }
     }
 
-    /**
-     * NOVO: Inicializa o scheduler global que verifica todos os agendamentos
-     */
     initScheduler(client) {
         if (this.schedulerInterval) {
             clearInterval(this.schedulerInterval);
@@ -169,9 +160,6 @@ class CleaningService {
         this.checkScheduledCleanings(client);
     }
 
-    /**
-     * NOVO: Verifica todos os canais com agendamento ativo e executa se necessário
-     */
     async checkScheduledCleanings(client) {
         try {
             const guilds = client.guilds.cache.map(g => g.id);
@@ -214,9 +202,6 @@ class CleaningService {
         }
     }
 
-    /**
-     * NOVO: Verifica se o agendamento deve executar agora
-     */
     shouldRunNow(schedule, currentTime, currentDate) {
         if (!schedule || !schedule.time) return false;
 
@@ -240,9 +225,6 @@ class CleaningService {
         return false;
     }
 
-    /**
-     * NOVO: Calcula diferença de dias entre duas datas
-     */
     calculateDaysSince(lastRunDate, currentDate) {
         if (!lastRunDate) return 999; // Se nunca executou, força execução
 
@@ -255,9 +237,6 @@ class CleaningService {
         return diffDays;
     }
 
-    /**
-     * NOVO: Obtém horário atual no timezone especificado (formato HH:mm)
-     */
     getCurrentTime(timezone) {
         const formatter = new Intl.DateTimeFormat('en-US', {
             timeZone: timezone,
@@ -273,9 +252,6 @@ class CleaningService {
         return `${hour}:${minute}`;
     }
 
-    /**
-     * NOVO: Obtém data atual no timezone especificado (formato YYYY-MM-DD)
-     */
     getCurrentDate(timezone) {
         const formatter = new Intl.DateTimeFormat('en-CA', { // 'en-CA' usa formato ISO
             timeZone: timezone,
@@ -287,9 +263,6 @@ class CleaningService {
         return formatter.format(new Date()); // Retorna "YYYY-MM-DD"
     }
 
-    /**
-     * NOVO: Configura agendamento para um canal
-     */
     setSchedule(guildId, channelId, mode, time, intervalDays = null) {
         const config = ConfigService.get(guildId);
         const cleaning = config.cleaning || {};
@@ -322,9 +295,6 @@ class CleaningService {
         console.log(`[CleaningService] Agendamento configurado: ${mode} às ${time}${mode === 'interval' ? ` (a cada ${intervalDays} dias)` : ''}`);
     }
 
-    /**
-     * NOVO: Desativa agendamento de um canal
-     */
     disableSchedule(guildId, channelId) {
         const config = ConfigService.get(guildId);
         const cleaning = config.cleaning || {};

@@ -17,16 +17,13 @@ class WebServer {
     }
 
     setupRoutes() {
-        // Serve arquivos estáticos
-        // Utiliza process.cwd() para garantir que o caminho esteja correto independente de onde o script é iniciado
         const fs = require('fs');
         const rootDir = process.cwd();
 
-        // Tenta localizar a pasta dist em caminhos prováveis
         const possiblePaths = [
-            path.join(rootDir, 'frontend', 'dist'), // Padrão
-            path.join(rootDir, 'dist'),             // Se o conteúdo for movido para a raiz
-            path.join(__dirname, '../../frontend/dist') // Fallback relativo
+            path.join(rootDir, 'frontend', 'dist'),
+            path.join(rootDir, 'dist'),
+            path.join(__dirname, '../../frontend/dist')
         ];
 
         let distPath = possiblePaths.find(p => fs.existsSync(p));
@@ -34,14 +31,13 @@ class WebServer {
         if (!distPath) {
             console.error(`[WebServer] ALERTA CRÍTICO: Pasta frontend/dist NÃO ENCONTRADA em nenhum dos locais esperados:`);
             possiblePaths.forEach(p => console.error(` - ${p}`));
-            distPath = path.join(rootDir, 'frontend', 'dist'); // Define um padrão mesmo que falhe para exibir o erro 404 correto
+            distPath = path.join(rootDir, 'frontend', 'dist');
         } else {
             console.log(`[WebServer] Servindo arquivos estáticos de: ${distPath}`);
         }
 
         this.app.use(express.static(distPath));
 
-        // Status da API
         this.app.get('/api/status', (req, res) => {
             res.json({
                 online: this.client.isReady(),
@@ -50,15 +46,12 @@ class WebServer {
             });
         });
 
-        // API Insulto (Localizada)
         this.app.get('/api/insulto', (req, res) => {
             const lang = req.query.lang || 'pt-BR';
-            // Usa serviço de tradução para pegar um insulto aleatório
             const insulto = LocaleService.t('insults', lang);
             res.json({ text: insulto });
         });
 
-        // Fallback para index.html para SPA
         this.app.get('*', (req, res) => {
             if (req.originalUrl.startsWith('/api')) return res.status(404).json({ error: 'Endpoint not found' });
 

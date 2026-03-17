@@ -11,8 +11,8 @@ module.exports = {
         const isAdmin = PermissionService.canManageBot(interaction.member);
         const config = ConfigService.get(interaction.guildId);
 
-        // --- 1. CONFIGURAÇÃO GERAL ---
-        // Idioma
+
+
         const langMap = {
             'pt-BR': '🇧🇷 Português (Brasil)',
             'en-US': '🇺🇸 English (US)'
@@ -21,17 +21,13 @@ module.exports = {
         const langName = langMap[langCode] || langCode;
         const langDisplay = `\`${langCode}\`\n${langName}`;
 
-        // --- 2. MÓDULOS ---
-        // Cleanings active
+
         const cleanings = config.cleaning ? Object.values(config.cleaning).filter(c => c.active).length : 0;
-        // Anti-spam
         const antispam = config.antispam?.enabled;
-        // Dates
         const globalDates = DateService.getGlobalDates().length;
         const disabledGlobals = config.dates?.disabledGlobals?.length || 0;
         const customDates = config.dates?.customs?.length || 0;
         const totalDates = (globalDates - disabledGlobals) + customDates;
-        // Notification Channel
         const notifyChannel = config.security?.notificationChannel || t('status.value_none', lang);
         const notifyDisplay = notifyChannel === t('status.value_none', lang)
             ? notifyChannel
@@ -44,13 +40,12 @@ module.exports = {
             `**${t('status.field_notify', lang)}:** ${notifyDisplay}`
         ].join('\n');
 
-        // --- 3. PROTOCOLOS DE PROTEÇÃO (Canal Atual) ---
+
         const channelCleaner = config.cleaning?.[interaction.channelId];
         let protectionContent = t('status.prot_none', lang);
 
         if (channelCleaner) {
             const exclusions = channelCleaner.exclusions || {};
-            // Defaults logic matching CleaningService
             const ignorePinned = exclusions.ignorePinned !== false;
             const ignoreBots = exclusions.ignoreBots || false;
             const ignoreSystem = exclusions.ignoreSystem !== false;
@@ -62,27 +57,22 @@ module.exports = {
             pLines.push(`**${t('status.prot_pinned', lang)}:** ${ignorePinned ? 'ON' : 'OFF'}`);
             pLines.push(`**${t('status.prot_bots', lang)}:** ${ignoreBots ? 'ON' : 'OFF'}`);
 
-            // Age
             const ageText = minAge > 0 ? `ON (< ${minAge} ${t('status.min', lang)})` : 'OFF';
             pLines.push(`**${t('status.prot_recent', lang)}:** ${ageText}`);
 
-            // Reactions
             pLines.push(`**${t('status.prot_reactions', lang)}:** ${minReactions > 0 ? minReactions : 'OFF'}`);
 
-            // Roles
             const rolesText = ignoreRoles.length > 0 ? `${ignoreRoles.length} cargos` : t('status.roles_none', lang);
             pLines.push(`**${t('status.prot_roles', lang)}:** ${rolesText}`);
 
             protectionContent = pLines.join('\n');
         }
 
-        // --- 4. PERMISSÕES ---
+
         const authorizedRoles = config.security?.authorizedRoles || [];
         let permissionContent = "";
 
         if (authorizedRoles.length > 0) {
-            // Show list or count depending on size? User said "Exibir... Cargos autorizados".
-            // Let's show first 3 and count
             const mentions = authorizedRoles.slice(0, 5).map(id => `<@&${id}>`);
             if (authorizedRoles.length > 5) mentions.push(`+${authorizedRoles.length - 5}...`);
             permissionContent = mentions.join(', ');
@@ -90,7 +80,7 @@ module.exports = {
             permissionContent = t('status.perm_default', lang);
         }
 
-        // --- 5. HORÁRIO DE FUNCIONAMENTO (AGENDAMENTO) ---
+
         let scheduleContent = '';
         if (channelCleaner && channelCleaner.schedule && channelCleaner.schedule.mode && channelCleaner.schedule.mode !== 'off') {
             const sch = channelCleaner.schedule;
@@ -146,10 +136,10 @@ module.exports = {
             }
         );
 
-        // --- CONSTRUCT EMBED ---
+
         const embed = new EmbedBuilder()
-            .setTitle(t('status.title', lang)) // Relatório de Dominância
-            .setDescription(t('status.description', lang)) // Resumo operacional...
+            .setTitle(t('status.title', lang))
+            .setDescription(t('status.description', lang))
             .setColor('#0099ff')
             .addFields(embedFields)
             .setFooter({ text: t('status.footer', lang, { time: new Date().toLocaleTimeString(lang, { timeZone: config.timezone || 'UTC' }) }) });

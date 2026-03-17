@@ -65,14 +65,12 @@ class DateService {
         const todayStr = `${now.getFullYear()}-${now.getMonth() + 1}-${now.getDate()}`;
         const hour = now.getHours();
 
-        // 1. Processa datas globais (Canal Estrito, aprox. 10h)
         if (lastRun !== todayStr && hour >= 10) {
             await this.processGlobalDates(guildId, config, now);
             datesConfig.lastRun = todayStr;
             ConfigService.update(guildId, { dates: datesConfig });
         }
 
-        // 2. Processa datas personalizadas (Por hora, por canal de data)
         await this.processCustomDates(guildId, config, now);
     }
 
@@ -83,7 +81,6 @@ class DateService {
         const datesConfig = config.dates || {};
         const disabledGlobals = datesConfig.disabledGlobals || [];
 
-        // ESTRITO: Datas globais devem ter um canal configurado. Sem adivinhação.
         const globalChannelId = datesConfig.globalChannel;
 
         // Se não configurado, PULA e registra erro
@@ -113,7 +110,6 @@ class DateService {
             return;
         }
 
-        // Segurança: Verificação de canal ativo
         if (!(await this.isChannelAlive(targetChannel))) {
             LogService.add(guildId, {
                 type: LogService.Events.SYSTEM_SKIP,
@@ -160,7 +156,6 @@ class DateService {
             const targetHour = custom.time ? parseInt(custom.time.split(':')[0]) : 10;
             if (hour < targetHour) continue;
 
-            // ESTRITO: Canal de Data Personalizada
             const channelId = custom.channelId;
             if (!channelId) {
                 LogService.add(guildId, {
@@ -223,7 +218,7 @@ class DateService {
             day,
             month,
             message,
-            channelId, // ESTRITO: Canal Associado
+            channelId,
             userId,
             active: true
         };

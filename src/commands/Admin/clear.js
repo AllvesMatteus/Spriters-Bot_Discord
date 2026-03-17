@@ -12,14 +12,14 @@ module.exports = {
                 .setRequired(false)
         ),
     async execute(interaction, { t, lang }) {
-        // Validar Permissão
+
         if (!PermissionService.canManageBot(interaction.member)) {
             return interaction.editReply({ content: t('errors.permission_denied', lang) });
         }
 
         const amount = interaction.options.getInteger('amount') || 100;
 
-        // Fetch config usage
+
         const config = require('../../services/ConfigService').get(interaction.guildId);
         const channelConfig = config.cleaning?.[interaction.channelId] || {};
         const filters = channelConfig.filters || ['all'];

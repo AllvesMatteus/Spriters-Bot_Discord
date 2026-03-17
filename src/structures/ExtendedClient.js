@@ -27,7 +27,6 @@ class ExtendedClient extends Client {
     }
 
     loadCommands() {
-        // Leitura recursiva de comandos
         const readCommands = (dir) => {
             const files = fs.readdirSync(dir);
             for (const file of files) {
