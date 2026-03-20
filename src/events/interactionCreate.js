@@ -13,13 +13,9 @@ module.exports = {
             console.warn(`[InteractionCreate] ⚠️ Interação recebida com ALTO ATRASO (${latency}ms). Provável lentidão no Render.`);
         }
         
-        if (interaction.isChatInputCommand() || interaction.isButton() || interaction.isStringSelectMenu()) {
+        if (interaction.isChatInputCommand()) {
             try {
-                if (interaction.isChatInputCommand()) {
-                    await interaction.deferReply({ ephemeral: true });
-                } else {
-                    await interaction.deferUpdate().catch(() => {});
-                }
+                await interaction.deferReply({ ephemeral: true });
             } catch (e) {
                 console.error(`[InteractionCreate] ❌ Erro Crítico no Defer (${interaction.id}): ${e.message}`);
                 return;
