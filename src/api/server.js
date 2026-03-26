@@ -38,6 +38,11 @@ class WebServer {
 
         this.app.use(express.static(distPath));
 
+        // Rota para UptimeRobot e Render Check
+        this.app.get('/', (req, res) => {
+            res.send('Spriters Bot Operacional');
+        });
+
         this.app.get('/api/status', (req, res) => {
             res.json({
                 online: this.client.isReady(),

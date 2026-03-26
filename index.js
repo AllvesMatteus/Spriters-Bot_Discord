@@ -1,5 +1,4 @@
 require('dotenv').config();
-const express = require('express');
 const ExtendedClient = require('./src/structures/ExtendedClient');
 
 // Verificação de segurança para o Render
@@ -10,27 +9,15 @@ if (!process.env.TOKEN && !process.env.DISCORD_TOKEN) {
 
 const client = new ExtendedClient();
 
-// --- SERVIDOR HTTP PARA O RENDER (MANTÉM O BOT ONLINE) ---
-const app = express();
-const PORT = process.env.PORT || 3000;
-
-app.get('/', (req, res) => {
-    res.send('Spriters Bot Operacional');
-});
-
-// Suporte para o WebServer antigo do bot (se necessário)
+// --- SERVIDOR WEB INTEGRADO (DASHBOARD + KEEP-ALIVE) ---
+// Usamos o WebServer do projeto que já lida com Socket.io, Dashboard e API.
 try {
     const WebServer = require('./src/api/server');
     const webServer = new WebServer(client);
     webServer.start();
 } catch (e) {
-    console.log('[Info] Usando o servidor HTTP simplificado do index.js');
+    console.error('❌ Erro ao iniciar o WebServer:', e.message);
 }
-
-app.listen(PORT, () => {
-    console.log(`[Render] Servidor HTTP escutando na porta ${PORT}`);
-});
-// ---------------------------------------------------------
 
 process.on('SIGINT', () => {
     console.log('Desligando bot e servidor...');
@@ -41,7 +28,7 @@ process.on('SIGINT', () => {
 // Inicializa o Bot
 client.start(process.env.TOKEN || process.env.DISCORD_TOKEN);
 
-// Outros módulos secundários (KeepAlive)
+// Módulo de KeepAlive (Faz o ping para evitar hibernação do Render)
 try {
     const startKeepAlive = require('./src/utils/keepAlive');
     startKeepAlive();
