@@ -6,16 +6,14 @@ class ExtendedClient extends Client {
     constructor() {
         super({
             intents: [
-                GatewayIntentBits.Guilds,           // Permissões básicas de servidor
-                GatewayIntentBits.GuildMessages,    // Monitorar mensagens em canais
-                GatewayIntentBits.MessageContent,   // CRUCIAL: Ler o conteúdo das mensagens
-                GatewayIntentBits.GuildMembers,     // Monitorar entrada/saída de membros
-                GatewayIntentBits.GuildPresences    // Monitorar status online/offline
+                GatewayIntentBits.Guilds,
+                GatewayIntentBits.GuildMessages,
+                GatewayIntentBits.MessageContent
             ],
             partials: [
-                Partials.Message,  // Permite lidar com mensagens enviadas antes do bot ligar
-                Partials.Channel,  // Permite lidar com canais não cacheados
-                Partials.Reaction  // Permite lidar com reações em mensagens antigas
+                Partials.Message,
+                Partials.Channel,
+                Partials.Reaction
             ]
         });
 
@@ -25,10 +23,16 @@ class ExtendedClient extends Client {
 
     start(token) {
         this.loadHandlers();
-        return this.login(token).catch(err => {
-            console.error('[ExtendedClient] ❌ FALHA NO LOGIN:', err.message);
-            process.exit(1);
-        });
+        console.log('[ExtendedClient] Handlers carregados. Iniciando login no Discord...');
+        const loginStart = Date.now();
+        return this.login(token)
+            .then(() => {
+                console.log(`[ExtendedClient] ✅ Login bem-sucedido em ${Date.now() - loginStart}ms`);
+            })
+            .catch(err => {
+                console.error('[ExtendedClient] ❌ FALHA NO LOGIN:', err.message);
+                process.exit(1);
+            });
     }
 
     loadHandlers() {
