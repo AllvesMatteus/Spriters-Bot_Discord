@@ -25,7 +25,10 @@ class ExtendedClient extends Client {
 
     start(token) {
         this.loadHandlers();
-        this.login(token);
+        return this.login(token).catch(err => {
+            console.error('[ExtendedClient] ❌ FALHA NO LOGIN:', err.message);
+            process.exit(1);
+        });
     }
 
     loadHandlers() {
