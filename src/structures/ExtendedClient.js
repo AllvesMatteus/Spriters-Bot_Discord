@@ -1,4 +1,4 @@
-const { Client, Collection, GatewayIntentBits } = require('discord.js');
+const { Client, Collection, GatewayIntentBits, Partials } = require('discord.js');
 const fs = require('fs');
 const path = require('path');
 
@@ -6,9 +6,16 @@ class ExtendedClient extends Client {
     constructor() {
         super({
             intents: [
-                GatewayIntentBits.Guilds,
-                GatewayIntentBits.GuildMessages,
-                GatewayIntentBits.MessageContent
+                GatewayIntentBits.Guilds,           // Permissões básicas de servidor
+                GatewayIntentBits.GuildMessages,    // Monitorar mensagens em canais
+                GatewayIntentBits.MessageContent,   // CRUCIAL: Ler o conteúdo das mensagens
+                GatewayIntentBits.GuildMembers,     // Monitorar entrada/saída de membros
+                GatewayIntentBits.GuildPresences    // Monitorar status online/offline
+            ],
+            partials: [
+                Partials.Message,  // Permite lidar com mensagens enviadas antes do bot ligar
+                Partials.Channel,  // Permite lidar com canais não cacheados
+                Partials.Reaction  // Permite lidar com reações em mensagens antigas
             ]
         });
 
