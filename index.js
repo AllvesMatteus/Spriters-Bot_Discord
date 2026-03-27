@@ -1,16 +1,15 @@
 require('dotenv').config();
 const ExtendedClient = require('./src/structures/ExtendedClient');
 
-if (!process.env.TOKEN && !process.env.DISCORD_TOKEN) {
-    console.error('❌ ERRO FATAL: Token (TOKEN) não encontrado nas variáveis de ambiente do Render.');
+if (!process.env.TOKEN) {
+    console.error('❌ ERRO FATAL: Variável TOKEN não encontrada nas variáveis de ambiente do Render.');
     process.exit(1);
 }
 
 const client = new ExtendedClient();
 
-// PRIORIDADE 1: Conectar ao Discord IMEDIATAMENTE
 console.log('[Sistema] Iniciando conexão com o Discord...');
-client.start(process.env.TOKEN || process.env.DISCORD_TOKEN);
+client.start(process.env.TOKEN);
 
 // PRIORIDADE 2: Servidor Web (Dashboard + KeepAlive endpoint)
 try {

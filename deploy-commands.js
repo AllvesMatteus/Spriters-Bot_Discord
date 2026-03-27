@@ -3,8 +3,8 @@ const fs = require('fs');
 const path = require('path');
 require('dotenv').config();
 
-const TOKEN = process.env.TOKEN || process.env.DISCORD_TOKEN;
-const CLIENT_ID = process.env.CLIENT_ID || process.env.DISCORD_CLIENT_ID;
+const TOKEN = process.env.TOKEN;
+const CLIENT_ID = process.env.CLIENT_ID;
 
 if (!TOKEN || !CLIENT_ID) {
     console.error('Missing TOKEN or CLIENT_ID in .env');

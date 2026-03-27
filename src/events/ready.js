@@ -10,8 +10,8 @@ module.exports = {
 
         // Registra os Slash Commands automaticamente no Discord
         try {
-            const TOKEN = process.env.TOKEN || process.env.DISCORD_TOKEN;
-            const CLIENT_ID = process.env.CLIENT_ID || process.env.DISCORD_CLIENT_ID;
+            const TOKEN = process.env.TOKEN;
+            const CLIENT_ID = process.env.CLIENT_ID;
 
             if (TOKEN && CLIENT_ID) {
                 const commands = client.commands.map(cmd => cmd.data.toJSON());
