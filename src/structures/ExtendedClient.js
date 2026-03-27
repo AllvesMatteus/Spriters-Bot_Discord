@@ -19,17 +19,34 @@ class ExtendedClient extends Client {
 
         this.commands = new Collection();
         this.events = new Collection();
+
+        // Listeners de diagnóstico do Gateway
+        this.on('error', (err) => console.error('[Discord] ❌ Client Error:', err.message));
+        this.on('warn', (info) => console.warn('[Discord] ⚠️ Warning:', info));
+        this.on('shardError', (err, id) => console.error(`[Discord] ❌ Shard ${id} Error:`, err.message));
+        this.on('invalidated', () => {
+            console.error('[Discord] 💀 Sessão INVALIDADA. Token pode estar expirado ou revogado.');
+            process.exit(1);
+        });
     }
 
     start(token) {
         this.loadHandlers();
-        console.log('[ExtendedClient] Handlers carregados. Iniciando login no Discord...');
+        console.log('[ExtendedClient] Iniciando login no Discord...');
         const loginStart = Date.now();
+
+        // Timeout para mostrar se o login está pendurado
+        const loginTimeout = setTimeout(() => {
+            console.error(`[ExtendedClient] ⏰ Login está demorando mais de 60s. Possível rate-limit do Gateway.`);
+        }, 60000);
+
         return this.login(token)
             .then(() => {
+                clearTimeout(loginTimeout);
                 console.log(`[ExtendedClient] ✅ Login bem-sucedido em ${Date.now() - loginStart}ms`);
             })
             .catch(err => {
+                clearTimeout(loginTimeout);
                 console.error('[ExtendedClient] ❌ FALHA NO LOGIN:', err.message);
                 process.exit(1);
             });
